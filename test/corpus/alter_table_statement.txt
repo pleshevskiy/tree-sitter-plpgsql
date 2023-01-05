@@ -223,7 +223,13 @@ alter table foo add constraint u_bar unique(bar);
         (table_constraint
           (identifier)
           (table_constraint_ty
-            (identifier)))))))
+            (identifier)
+          )
+        )
+      )
+    )
+  )
+)
 
 ================================================================================
 column drop constraint

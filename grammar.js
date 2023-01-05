@@ -27,6 +27,14 @@ module.exports = grammar({
   // NOTE(chrde): https://github.com/tree-sitter/tree-sitter-javascript/blob/1ddbf1588c353edab37791cdcc9f17e56fb4ea73/grammar.js#L9
   extras: ($) => [$.comment, /[\s\uFEFF\u2060\u200B\u00A0]/],
 
+  conflicts: ($) => [
+    [$.op_expression],
+    [$.select_statement],
+    [$.from_item],
+    [$.select_group_by, $._value_expression],
+    [$.time_expression, $.op_expression],
+  ],
+
   rules: {
     source_file: ($) =>
       repeat(choice($.psql_statement, seq($._statement, ";"))),
@@ -664,20 +672,18 @@ module.exports = grammar({
     do_block: ($) => seq(kw("do"), $.block),
 
     select_statement: ($) =>
-      prec.left(
-        seq(
-          optional($.with_query),
-          kw("select"),
-          commaSep($.select_item),
-          optional($.into),
-          optional($.select_from),
-          optional($.select_where),
-          optional($.select_group_by),
-          optional($.select_having),
-          optional($.select_order_by),
-          optional($._select_limit_offset),
-          optional($.into)
-        )
+      seq(
+        optional($.with_query),
+        kw("select"),
+        commaSep($.select_item),
+        optional($.into),
+        optional($.select_from),
+        optional($.select_where),
+        optional($.select_group_by),
+        optional($.select_having),
+        optional($.select_order_by),
+        optional($._select_limit_offset),
+        optional($.into)
       ),
 
     with_query: ($) => seq(kw("with"), commaSep1($.with_query_item)),
@@ -718,15 +724,12 @@ module.exports = grammar({
 
     // TODO(chrde): rollup, cube, grouping sets
     select_group_by: ($) =>
-      prec(
-        1,
-        seq(
-          kw("group"),
-          kw("by"),
-          choice(
-            seq("(", commaSep1($._value_expression), ")"),
-            commaSep1($._value_expression)
-          )
+      seq(
+        kw("group"),
+        kw("by"),
+        choice(
+          seq("(", commaSep1($._value_expression), ")"),
+          commaSep1($._value_expression)
         )
       ),
 
@@ -746,12 +749,10 @@ module.exports = grammar({
     select_from: ($) => seq(kw("from"), commaSep1($.from_item)),
 
     from_item: ($) =>
-      prec.left(
-        seq(
-          // TODO(chrde): https://www.postgresql.org/docs/current/sql-select.html
-          choice($.from_select, $.from_table, $.from_function),
-          repeat($.join_item)
-        )
+      seq(
+        // TODO(chrde): https://www.postgresql.org/docs/current/sql-select.html
+        choice($.from_select, $.from_table, $.from_function),
+        repeat($.join_item)
       ),
 
     from_select: ($) =>
@@ -773,12 +774,10 @@ module.exports = grammar({
       ),
 
     join_item: ($) =>
-      prec.left(
-        choice(
-          seq(kw("natural"), $.join_type, $.from_item),
-          seq($.join_type, $.from_item, $.join_condition),
-          seq(kw("cross"), kw("join"), $.from_item)
-        )
+      choice(
+        seq(kw("natural"), $.join_type, $.from_item),
+        seq($.join_type, $.from_item, $.join_condition),
+        seq(kw("cross"), kw("join"), $.from_item)
       ),
 
     join_condition: ($) =>
@@ -913,8 +912,7 @@ module.exports = grammar({
 
     type_length: ($) => seq("(", $.number, ")"),
 
-    string: ($) =>
-      seq("'", repeat(choice(prec(1, /''/), prec(2, /[^']/))), "'"),
+    string: ($) => seq("'", repeat(choice(/''/, /[^']/)), "'"),
 
     // NOTE(chrde): taken from https://github.com/tree-sitter/tree-sitter-javascript/blob/1ddbf1588c353edab37791cdcc9f17e56fb4ea73/grammar.js#L899
     comment: ($) =>
@@ -1003,37 +1001,20 @@ module.exports = grammar({
 
     op_expression: ($) =>
       choice(
-        prec.left(12, seq($._value_expression, $.cast, $._type)),
+        seq($._value_expression, $.cast, $._type),
         // array access
-        prec.right(10, seq(choice($.minus, $.plus), $._value_expression)),
+        seq(choice($.minus, $.plus), $._value_expression),
         // ^
-        prec.left(
-          8,
-          seq($._value_expression, choice("*", "/", "%"), $._value_expression)
-        ),
-        prec.left(
-          7,
-          seq($._value_expression, choice("-", "+"), $._value_expression)
-        ),
-        prec.left(6, seq($._value_expression, $.other_op, $._value_expression)),
-        prec.left(
-          5,
-          seq($._value_expression, $.contains_op, $._value_expression)
-        ),
-        prec.left(
-          4,
-          seq($._value_expression, $.comparison_op, $._value_expression)
-        ),
-        prec.left(
-          3,
-          seq($._value_expression, $.comparison_kw, $._value_expression)
-        ),
-        prec.left(3, seq($._value_expression, $.comparison_null)),
-        prec.right(2, seq($.not, $._value_expression)),
-        prec.left(
-          1,
-          seq($._value_expression, choice($.and, $.or), $._value_expression)
-        )
+        seq($._value_expression, choice("*", "/", "%"), $._value_expression),
+        seq($._value_expression, choice("-", "+"), $._value_expression),
+        seq($._value_expression, $.other_op, $._value_expression),
+        seq($._value_expression, $.contains_op, $._value_expression),
+        seq($._value_expression, $.comparison_op, $._value_expression),
+        seq($._value_expression, $.comparison_kw, $._value_expression),
+        seq($._value_expression, $.comparison_null),
+        seq($.not, $._value_expression),
+
+        seq($._value_expression, choice($.and, $.or), $._value_expression)
       ),
 
     _list_of_identifiers: ($) => seq("(", commaSep($.identifier), ")"),
