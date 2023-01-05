@@ -336,10 +336,9 @@ module.exports = grammar({
       ),
 
     constraint_when: ($) =>
-      choice(
+      seq(
         kw("deferrable"),
-        seq(kw("deferrable"), kw("initially"), kw("immediate")),
-        seq(kw("deferrable"), kw("initially"), kw("deferred"))
+        optional(seq(kw("initially"), choice(kw("immediate"), kw("deferred"))))
       ),
 
     table_constraint_ty: ($) =>

@@ -2186,43 +2186,39 @@
       ]
     },
     "constraint_when": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
           "type": "PATTERN",
           "value": "[dD][eE][fF][eE][rR][rR][aA][bB][lL][eE]"
         },
         {
-          "type": "SEQ",
+          "type": "CHOICE",
           "members": [
             {
-              "type": "PATTERN",
-              "value": "[dD][eE][fF][eE][rR][rR][aA][bB][lL][eE]"
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "PATTERN",
+                  "value": "[iI][nN][iI][tT][iI][aA][lL][lL][yY]"
+                },
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "PATTERN",
+                      "value": "[iI][mM][mM][eE][dD][iI][aA][tT][eE]"
+                    },
+                    {
+                      "type": "PATTERN",
+                      "value": "[dD][eE][fF][eE][rR][rR][eE][dD]"
+                    }
+                  ]
+                }
+              ]
             },
             {
-              "type": "PATTERN",
-              "value": "[iI][nN][iI][tT][iI][aA][lL][lL][yY]"
-            },
-            {
-              "type": "PATTERN",
-              "value": "[iI][mM][mM][eE][dD][iI][aA][tT][eE]"
-            }
-          ]
-        },
-        {
-          "type": "SEQ",
-          "members": [
-            {
-              "type": "PATTERN",
-              "value": "[dD][eE][fF][eE][rR][rR][aA][bB][lL][eE]"
-            },
-            {
-              "type": "PATTERN",
-              "value": "[iI][nN][iI][tT][iI][aA][lL][lL][yY]"
-            },
-            {
-              "type": "PATTERN",
-              "value": "[dD][eE][fF][eE][rR][rR][eE][dD]"
+              "type": "BLANK"
             }
           ]
         }
