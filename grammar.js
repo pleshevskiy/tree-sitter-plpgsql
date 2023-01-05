@@ -140,6 +140,7 @@ module.exports = grammar({
     insert_values: ($) => seq("(", commaSep($.insert_item), ")"),
 
     insert_item: ($) => choice(kw("default"), $._value_expression),
+
     insert_conflict: ($) =>
       choice(
         seq(
@@ -160,11 +161,13 @@ module.exports = grammar({
           optional($.where_filter)
         )
       ),
+
     conflict_target: ($) =>
       choice(
         seq(kw("on"), kw("constraint"), $.identifier),
         seq("(", commaSep($._value_expression), ")")
       ),
+
     update_set: ($) =>
       choice(
         seq($.identifier, "=", $.update_value),
@@ -177,7 +180,9 @@ module.exports = grammar({
           ")"
         )
       ),
+
     update_value: ($) => choice(kw("default"), $._value_expression),
+
     returning: ($) => seq(kw("returning"), commaSep1($.select_item)),
 
     create_table_statement: ($) =>
@@ -228,6 +233,7 @@ module.exports = grammar({
       ),
 
     index_using: ($) => seq(kw("using"), $.identifier),
+
     index_col: ($) =>
       choice(
         seq(
@@ -243,9 +249,12 @@ module.exports = grammar({
           optional($.index_col_nulls)
         )
       ),
+
     index_col_dir: ($) => choice(kw("asc"), kw("desc")),
+
     index_col_nulls: ($) =>
       choice(seq(kw("nulls"), kw("first")), seq(kw("nulls"), kw("last"))),
+
     index_includes: ($) => seq(kw("include"), $._list_of_identifiers),
 
     delete_statement: ($) =>
@@ -674,6 +683,7 @@ module.exports = grammar({
       ),
 
     with_query: ($) => seq(kw("with"), commaSep1($.with_query_item)),
+
     with_query_item: ($) =>
       seq(
         $.identifier,
@@ -686,22 +696,28 @@ module.exports = grammar({
         $._with_query_statement,
         ")"
       ),
+
     into: ($) =>
       seq(kw("into"), optional(kw("strict")), commaSep1($.identifier)),
+
     select_having: ($) => seq(kw("having"), $._value_expression),
+
     _select_limit_offset: ($) =>
       choice(
         seq($.select_limit, optional($.select_offset)),
         seq($.select_offset, optional($.select_limit))
       ),
+
     select_limit: ($) =>
       seq(kw("limit"), choice(kw("all"), $._value_expression)),
+
     select_offset: ($) =>
       seq(
         kw("offset"),
         $._value_expression,
         optional(choice(kw("row"), kw("rows")))
       ),
+
     // TODO(chrde): rollup, cube, grouping sets
     select_group_by: ($) =>
       prec(
@@ -715,15 +731,22 @@ module.exports = grammar({
           )
         )
       ),
+
     select_order_by: ($) =>
       seq(kw("order"), kw("by"), commaSep1($.order_by_item)),
+
     order_by_item: ($) =>
       seq($._value_expression, optional($.order_by_direction)),
+
     order_by_direction: ($) => choice(kw("asc"), kw("desc")),
+
     select_where: ($) => $.where_filter,
+
     select_item: ($) =>
       seq($._value_expression, optional(kw("as")), optional($.identifier)),
+
     select_from: ($) => seq(kw("from"), commaSep1($.from_item)),
+
     from_item: ($) =>
       prec.left(
         seq(
@@ -732,10 +755,13 @@ module.exports = grammar({
           repeat($.join_item)
         )
       ),
+
     from_select: ($) =>
       seq("(", $.select_statement, ")", optional(kw("as")), $.identifier),
+
     from_table: ($) =>
       seq($.identifier, optional(kw("as")), optional($.identifier)),
+
     from_function: ($) =>
       seq(
         $.function_call,
@@ -756,11 +782,13 @@ module.exports = grammar({
           seq(kw("cross"), kw("join"), $.from_item)
         )
       ),
+
     join_condition: ($) =>
       choice(
         seq(kw("on"), $._value_expression),
         seq(kw("using"), $._list_of_identifiers)
       ),
+
     join_type: ($) =>
       seq(
         choice(
@@ -792,7 +820,9 @@ module.exports = grammar({
 
     function_return: ($) =>
       seq(kw("returns"), choice($._type, $.return_setof, $.return_table)),
+
     return_setof: ($) => seq(kw("setof"), $._type),
+
     return_table: ($) =>
       seq(kw("table"), "(", commaSep1($.var_declaration), ")"),
 
@@ -828,10 +858,15 @@ module.exports = grammar({
       seq(field("name", $.identifier), field("type", $._type)),
 
     where_filter: ($) => seq(kw("where"), $._value_expression),
+
     or_replace: ($) => seq(kw("or"), kw("replace")),
+
     temporary: ($) => choice(kw("temp"), kw("temporary")),
+
     if_not_exists: ($) => seq(kw("if"), kw("not"), kw("exists")),
+
     if_exists: ($) => seq(kw("if"), kw("exists")),
+
     as: ($) => seq(kw("as"), $.identifier),
 
     _type: ($) =>
@@ -999,29 +1034,47 @@ module.exports = grammar({
 
     // TODO(chrde): https://www.postgresql.org/docs/13/sql-syntax-lexical.html
     comparison_op: ($) => choice("<", ">", "=", "<=", ">=", "<>", "!="),
+
     // TODO(chrde): is there a better name other than `contains_op`?
     contains_op: ($) =>
       choice(kw("between"), kw("in"), kw("like"), kw("ilike")),
+
     comparison_null: ($) =>
       choice(kw("is null"), kw("isnull"), kw("is not null"), kw("notnull")),
+
     comparison_kw: ($) =>
       choice(kw("is"), kw("is distinct from"), kw("is not distinct from")),
+
     // TODO(chrde): this should be a regex
     other_op: ($) =>
       choice("||", "<@", "@>", "<<", ">>", "&&", "&<", "&>", "-|-"),
+
     cast: ($) => "::",
+
     minus: ($) => "-",
+
     plus: ($) => "+",
+
     not: ($) => kw("not"),
+
     and: ($) => kw("and"),
+
     or: ($) => kw("or"),
+
     true: ($) => kw("true"),
+
     false: ($) => kw("false"),
+
     null: ($) => kw("null"),
+
     star: ($) => "*",
+
     any: ($) => /.*/,
+
     number: ($) => /-?\d+/,
+
     identifier: ($) => $._identifier,
+
     _identifier: ($) => /[a-zA-Z0-9_]+(\.?[a-zA-Z0-9_]+)*/,
     //                                ^
     //                                |- we dont want to match consecutive dots, e.g: 1..2 consists of 3 tokens
