@@ -1,0 +1,335 @@
+DO $root$
+begin
+
+create type contact_group_status as enum (
+  'DRAFT',
+  'ACTIVE',
+  'ARCHIVED',
+  'DELETED'
+);
+
+create type contact_status as enum (
+  'ACTIVE',
+  'UNSUBSCRIBED',
+  'ARCHIVED',
+  'INVALID',
+  'BLOCKED'
+);
+
+create type email_template_status as enum (
+  'DRAFT',
+  'ACTIVE',
+  'DELETED'
+);
+
+create type file_status as enum (
+  'ACTIVE',
+  'DELETED'
+);
+
+create type mailing_status as enum (
+  'DRAFT',
+  'ONGOING',
+  'STOPPING',
+  'STOPPED',
+  'COMPLETED',
+  'DELETED'
+);
+
+create type order_payment_method as enum (
+  'FULL_PREPAYMENT',
+  'PREPAYMENT',
+  'ADVANCE',
+  'FULL_PAYMENT',
+  'PARTIAL_PAYMENT',
+  'CREDIT',
+  'CREDIT_PAYMENT'
+);
+
+create type order_payment_object as enum (
+  'COMMODITY',
+  'EXCISE',
+  'JOB',
+  'SERVICE',
+  'GAMBLING_BET',
+  'GAMBLING_PRIZE',
+  'LOTTERY',
+  'LOTTERY_PRIZE',
+  'INTELLECTUAL_ACTIVITY',
+  'PAYMENT',
+  'AGENT_COMMISSION',
+  'COMPOSITE',
+  'ANOTHER'
+);
+
+create type order_payment_status as enum (
+  'CREATED',
+  'SENT',
+  'AUTHORIZED',
+  'CONFIRMED',
+  'REVERSED',
+  'REFUNDED',
+  'PARTIAL_REFUNDED',
+  'REJECTED'
+);
+
+create type order_tax as enum (
+  'NONE',
+  'VAT0',
+  'VAT10',
+  'VAT20',
+  'VAT110',
+  'VAT120'
+);
+
+create type order_taxation as enum (
+  'OSN',
+  'USN_INCOME',
+  'USN_INCOME_OUTCOME',
+  'ENVD',
+  'ESN',
+  'PATENT'
+);
+
+create type product_type as enum (
+  'SUBSCRIPTION',
+  'LIMITED_CONTENT'
+);
+
+create type subscription_interval_type as enum (
+  'DAILY',
+  'WEEKLY',
+  'MONTHLY',
+  'YEARLY'
+);
+
+create type user_sender_status as enum (
+  'ACTIVE',
+  'NOT_CONFIRMED',
+  'BLOCKED'
+);
+
+create table alembic_version (
+  version_num varchar(32) not null,
+
+  constraint alembic_version_pkc primary key (version_num)
+);
+
+create table roles (
+  id        smallserial primary key,
+  name      varchar(64) not null,
+  "default" boolean
+);
+
+insert into roles (name, "default") values
+  ('User', true),
+  ('Moderator', false),
+  ('Administrator', false);
+
+create table users (
+  id            uuid          default gen_random_uuid() constraint users_pkey primary key,
+  email         text          not null constraint users_email_key unique,
+  username      varchar(64),
+  password_hash varchar(128)  not null,
+  role_id       smallint      constraint users_role_id_fkey references roles on update cascade on delete cascade,
+  confirmed     boolean,
+  member_since  timestamp,
+  last_seen     timestamp,
+  avatar_hash   varchar(32)
+);
+
+create table email_senders (
+  id            uuid                default gen_random_uuid() constraint user_senders_pkey primary key,
+  user_id       uuid                not null constraint user_senders_user_id_fkey references users on update cascade on delete cascade,
+  email         text                not null constraint user_senders_email_key unique,
+  name          varchar(64),
+  company_name  varchar(64),
+  policy_url    varchar(264),
+  confirmed     boolean,
+  status        user_sender_status  default 'NOT_CONFIRMED'::user_sender_status
+);
+
+create table contacts (
+  id          uuid            default gen_random_uuid() constraint contacts_pkey primary key,
+  user_id     uuid            not null constraint contacts_user_id_fkey references users on update cascade on delete cascade,
+  status      contact_status  default 'ACTIVE'::contact_status,
+  email       text            not null,
+  variables   jsonb,
+  rating      numeric(2,1)    default 2,
+  created_at  timestamp,
+  updated_at  timestamp,
+
+  constraint contacts_email_key unique (user_id, email)
+);
+
+create table contact_lists (
+  id          uuid                  default gen_random_uuid() constraint contact_lists_pkey primary key,
+  user_id     uuid                  not null constraint contact_lists_user_id_fkey references users on update cascade on delete cascade,
+  name        varchar               not null,
+  status      contact_group_status  default 'DRAFT'::contact_group_status,
+  created_at  timestamp,
+  updated_at  timestamp
+);
+
+create table contact_to_list (
+  contact_list_id   uuid      constraint contact_to_list_contact_list_id_fkey references contact_lists on update cascade on delete cascade,
+  contact_id        uuid      constraint contact_to_list_contact_id_fkey references contacts on update cascade on delete cascade,
+  unsubscribed      boolean   default false,
+
+  constraint contact_to_list_pkey primary key (contact_list_id, contact_id)
+);
+
+create table email_templates (
+  id          uuid                  default gen_random_uuid() constraint email_templates_pkey primary key,
+  user_id     uuid                  not null constraint email_templates_user_id_fkey references users on update cascade on delete cascade,
+  name        varchar(256)          not null,
+  source_text text                  not null,
+  source_html text                  not null,
+  status      email_template_status default 'DRAFT'::email_template_status,
+  created_at  timestamp,
+  updated_at  timestamp
+);
+
+create table files (
+  id            uuid         default gen_random_uuid() constraint files_pkey primary key,
+  user_id       uuid         not null constraint files_user_id_fkey references users on update cascade on delete cascade,
+  filename      varchar(256) not null,
+  mimetype      varchar(128) not null,
+  bucket        varchar(64)  not null,
+  created_at    timestamp,
+  object_name   varchar(256) not null,
+  size          integer      not null,
+  updated_at    timestamp,
+  status        file_status  default 'ACTIVE'::file_status,
+
+  constraint files_user_id_bucket_object_name_mimetype_key unique (user_id, bucket, object_name, mimetype)
+);
+
+create table email_campaigns (
+  id                uuid            default gen_random_uuid() constraint email_campaigns_pkey primary key,
+  user_id           uuid            not null constraint email_campaigns_user_id_fkey references users on update cascade on delete cascade,
+  name              varchar(150)    not null,
+  status            mailing_status  default 'DRAFT'::mailing_status,
+  contact_list_id   uuid            not null constraint email_campaigns_contact_list_id_fkey references contact_lists on update cascade on delete cascade,
+  email_sender_id   uuid            not null constraint email_campaigns_email_sender_id_fkey references email_senders on update cascade on delete cascade,
+  email_template_id uuid            not null constraint email_campaigns_email_template_id_fkey references email_templates on update cascade on delete cascade,
+  subject           varchar(150),
+  preview_text      varchar(150),
+  variables         jsonb,
+  started_at        timestamp,
+  completed_at      timestamp,
+  created_at        timestamp,
+  updated_at        timestamp,
+  stopped_at        timestamp
+);
+
+create table email_campaign_attachments (
+  email_campaign_id uuid  constraint email_campaign_attachments_email_campaign_id_fkey references email_campaigns on update cascade on delete cascade,
+  file_id           uuid  constraint email_campaign_attachments_file_id_fkey references files on update cascade on delete cascade,
+
+  constraint email_campaign_attachments_pkey primary key (email_campaign_id, file_id)
+);
+
+create table email_messages (
+  id                uuid          default gen_random_uuid() constraint email_messages_pkey primary key,
+  user_id           uuid          not null constraint email_messages_user_id_fkey references users on update cascade on delete cascade,
+  email_campaign_id uuid          not null constraint email_messages_email_campaign_id_fkey references email_campaigns on update cascade on delete cascade,
+  contact_id        uuid          not null constraint email_messages_contact_id_fkey references contacts on update cascade on delete cascade,
+  sended            boolean,
+  opened            boolean,
+  sended_at         timestamp,
+  opened_at         timestamp,
+  error_message     varchar(150)
+);
+
+create table orders (
+  id                  uuid                  default gen_random_uuid() constraint orders_pkey primary key,
+  user_id             uuid                  not null constraint orders_user_id_fkey references users on update cascade on delete cascade,
+  description         varchar(256),
+  system_description  varchar(256),
+  payment_id          bigint,
+  payment_status      order_payment_status  default 'CREATED'::order_payment_status,
+  payment_url         varchar(100),
+  recurrent           boolean,
+  rebill_id           bigint,
+  amount              numeric(10,2),
+  error_code          varchar(16),
+  card_id             bigint,
+  card_pan            varchar(32),
+  card_exp            varchar(4),
+  taxation            order_taxation        default 'USN_INCOME'::order_taxation,
+  data                jsonb,
+  created_at          timestamp,
+  updated_at          timestamp,
+  parent_order_id     uuid                  constraint orders_parent_order_id_fkey references orders on update cascade on delete cascade
+);
+
+create table order_items (
+  id              uuid                  default gen_random_uuid() constraint order_items_pkey primary key,
+  order_id        uuid                  not null constraint order_items_order_id_fkey references orders on update cascade on delete cascade,
+  ordering        smallint              not null,
+  name            varchar(128)          not null,
+  description     varchar(256),
+  quantity        integer,
+  price           numeric(10,2)         not null,
+  amount          numeric(10,2)         not null,
+  payment_method  order_payment_method  default 'FULL_PREPAYMENT'::order_payment_method,
+  payment_object  order_payment_object  default 'SERVICE'::order_payment_object,
+  tax             order_tax             default 'VAT20'::order_tax,
+  data            jsonb
+);
+
+create table products (
+  id            serial        constraint products_pkey primary key,
+  name          varchar(64)   not null constraint products_name_key unique,
+  description   varchar(256),
+  type          product_type,
+  created_at    timestamp,
+  updated_at    timestamp
+);
+
+create table product_limited_contents (
+  id              serial        constraint product_limited_contents_pkey primary key,
+  product_id      integer       not null constraint product_limited_contents_product_id_fkey references products,
+  name            varchar(64)   not null,
+  description     varchar(256),
+  data            jsonb         default '{}'::jsonb,
+  price           numeric(10,2) not null,
+  discount_price  numeric(10,2),
+  created_at      timestamp,
+  updated_at      timestamp,
+
+  constraint product_limited_contents_product_id_name_key unique (product_id, name)
+);
+
+create table product_subscription_plans (
+  id                serial                      constraint product_subscription_plans_pkey primary key,
+  product_id        integer                     not null constraint product_subscription_plans_product_id_fkey references products,
+  name              varchar(64)                 not null,
+  description       varchar(256),
+  data              jsonb                       default '{}'::jsonb,
+  price             numeric(10,2)               not null,
+  discount_price    numeric(10,2),
+  interval_type     subscription_interval_type  default 'MONTHLY'::subscription_interval_type,
+  "interval"        integer NOT NULL,
+  created_at        timestamp,
+  updated_at        timestamp,
+
+  constraint product_subscription_plans_product_id_name_key unique (product_id, name)
+);
+
+create table user_plans (
+  id                            uuid        constraint user_plans_pkey primary key default gen_random_uuid(),
+  user_id                       uuid        not null constraint user_plans_user_id_fkey references users on update cascade on delete cascade,
+  product_id                    integer     not null constraint user_plans_product_id_fkey references products on update cascade on delete cascade,
+  product_subscription_plan_id  integer     not null constraint user_plans_product_subscription_plan_id_fkey references product_subscription_plans on update cascade on delete cascade,
+  order_id                      uuid        not null constraint user_plans_order_id_fkey references orders on update cascade on delete cascade,
+  started_at                    timestamp,
+  ended_at                      timestamp,
+  created_at                    timestamp,
+  updated_at                    timestamp
+);
+
+
+end;
+$root$;
