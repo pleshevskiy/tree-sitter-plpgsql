@@ -329,14 +329,10 @@ module.exports = grammar({
       ),
 
     table_constraint: ($) =>
-      choice(
-        seq($.table_constraint_ty, optional($.constraint_when)),
-        seq(
-          kw("constraint"),
-          $.identifier,
-          $.table_constraint_ty,
-          optional($.constraint_when)
-        )
+      seq(
+        optional(seq(kw("constraint"), $.identifier)),
+        $.table_constraint_ty,
+        optional($.constraint_when)
       ),
 
     constraint_when: ($) =>

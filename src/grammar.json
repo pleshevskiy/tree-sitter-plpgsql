@@ -2144,55 +2144,42 @@
       ]
     },
     "table_constraint": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
-          "type": "SEQ",
+          "type": "CHOICE",
           "members": [
             {
-              "type": "SYMBOL",
-              "name": "table_constraint_ty"
-            },
-            {
-              "type": "CHOICE",
+              "type": "SEQ",
               "members": [
                 {
-                  "type": "SYMBOL",
-                  "name": "constraint_when"
+                  "type": "PATTERN",
+                  "value": "[cC][oO][nN][sS][tT][rR][aA][iI][nN][tT]"
                 },
                 {
-                  "type": "BLANK"
+                  "type": "SYMBOL",
+                  "name": "identifier"
                 }
               ]
+            },
+            {
+              "type": "BLANK"
             }
           ]
         },
         {
-          "type": "SEQ",
+          "type": "SYMBOL",
+          "name": "table_constraint_ty"
+        },
+        {
+          "type": "CHOICE",
           "members": [
             {
-              "type": "PATTERN",
-              "value": "[cC][oO][nN][sS][tT][rR][aA][iI][nN][tT]"
-            },
-            {
               "type": "SYMBOL",
-              "name": "identifier"
+              "name": "constraint_when"
             },
             {
-              "type": "SYMBOL",
-              "name": "table_constraint_ty"
-            },
-            {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "constraint_when"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
+              "type": "BLANK"
             }
           ]
         }
