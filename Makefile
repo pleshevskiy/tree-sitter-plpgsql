@@ -1,12 +1,33 @@
-.DEFAULT_GOAL := g
-.PHONY: g t b
+TS_CONF := $$HOME/.config/tree-sitter/config.json
 
-g:
-	tree-sitter generate
-
-t:
-	# @$(MAKE) --no-print-directory build
+test: build
 	tree-sitter test
 
-b:
-	tree-sitter test --update
+highlight: build
+	tree-sitter highlight -t test/highlight/*
+
+playground: build-wasm
+	tree-sitter playground --quiet
+
+build-wasm: build
+	tree-sitter build-wasm
+
+build:
+	tree-sitter generate
+
+init: init-tree-sitter init-git-hooks
+
+init-tree-sitter:
+	if [ ! -f "$(TS_CONF)" ]; then \
+		tree-sitter init-config; \
+	fi
+	
+	if [ -z $$(jq '."parser-directories"' $(TS_CONF) | grep $$(dirname $$PWD) ) ]; then \
+		cat <<< $$(jq ".\"parser-directories\" |= . + [\"$$(dirname $(PWD))\"]" $(TS_CONF)) > $(TS_CONF); \
+	fi
+
+init-git-hooks:
+	ln -s $(PWD)/scripts/pre-commit $(PWD)/.git/hooks/pre-commit
+
+help:
+	cat Makefile

@@ -1,0 +1,14 @@
+#! /usr/bin/env bash
+
+# Can be used as a pre-commit hook
+# Just symlink this file to .git/hooks/pre-commit
+
+set -xe
+
+if [ ! -z $(git diff --cached --name-only | grep -e "^grammar.js$") ]
+then
+  make build
+  make build-wasm
+  git add src bindings *.wasm
+fi
+
