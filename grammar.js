@@ -160,7 +160,7 @@ module.exports = grammar({
 
     conflict_target: ($) =>
       choice(
-        seq(kw("on"), kw("constraint"), $.identifier),
+        seq(kw("on"), $._constraint, $.identifier),
         seq("(", commaSep($._value_expression), ")")
       ),
 
@@ -298,7 +298,7 @@ module.exports = grammar({
         ),
         seq(
           kw("drop"),
-          kw("constraint"),
+          $._constraint,
           optional($.if_exists),
           $.identifier,
           optional($.alter_table_fk_ref_action)
@@ -330,7 +330,7 @@ module.exports = grammar({
 
     table_constraint: ($) =>
       seq(
-        optional(seq(kw("constraint"), $.identifier)),
+        optional(seq($._constraint, $.identifier)),
         $.table_constraint_ty,
         optional($.constraint_when)
       ),
@@ -379,19 +379,17 @@ module.exports = grammar({
 
     alter_column_type: ($) =>
       seq($._type, optional(seq(kw("using"), $._value_expression))),
+
     alter_table_fk_ref_action: ($) => choice(kw("restrict"), kw("cascade")),
+
     table_column_item: ($) =>
       seq($.identifier, $._type, repeat($.column_constraint)),
 
     column_constraint: ($) =>
-      choice(
-        seq(
-          kw("constraint"),
-          $.identifier,
-          $.column_constraint_ty,
-          optional($.constraint_when)
-        ),
-        seq($.column_constraint_ty, optional($.constraint_when))
+      seq(
+        optional(seq($._constraint, $.identifier)),
+        $.column_constraint_ty,
+        optional($.constraint_when)
       ),
 
     column_constraint_ty: ($) =>
@@ -413,9 +411,12 @@ module.exports = grammar({
         kw("to"),
         $.identifier
       ),
+
     alter_table_rename_constraint: ($) =>
-      seq(kw("rename"), kw("constraint"), $.identifier, kw("to"), $.identifier),
+      seq(kw("rename"), $._constraint, $.identifier, kw("to"), $.identifier),
+
     alter_table_rename_table: ($) => seq(kw("rename"), kw("to"), $.identifier),
+
     alter_table_change_schema: ($) =>
       seq(kw("set"), kw("schema"), $.identifier),
 
@@ -517,7 +518,7 @@ module.exports = grammar({
     create_trigger_statement: ($) =>
       seq(
         kw("create"),
-        optional(kw("constraint")),
+        optional($._constraint),
         kw("trigger"),
         $.identifier,
         $.trigger_when,
@@ -1083,5 +1084,8 @@ module.exports = grammar({
     _identifier: ($) => /[a-zA-Z0-9_]+(\.?[a-zA-Z0-9_]+)*/,
     //                                ^
     //                                |- we dont want to match consecutive dots, e.g: 1..2 consists of 3 tokens
+
+    //--------------------------
+    _constraint: ($) => kw("constraint"),
   },
 });

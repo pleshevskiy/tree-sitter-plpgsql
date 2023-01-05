@@ -955,8 +955,8 @@
               "value": "[oO][nN]"
             },
             {
-              "type": "PATTERN",
-              "value": "[cC][oO][nN][sS][tT][rR][aA][iI][nN][tT]"
+              "type": "SYMBOL",
+              "name": "_constraint"
             },
             {
               "type": "SYMBOL",
@@ -1919,8 +1919,8 @@
               "value": "[dD][rR][oO][pP]"
             },
             {
-              "type": "PATTERN",
-              "value": "[cC][oO][nN][sS][tT][rR][aA][iI][nN][tT]"
+              "type": "SYMBOL",
+              "name": "_constraint"
             },
             {
               "type": "CHOICE",
@@ -2153,8 +2153,8 @@
               "type": "SEQ",
               "members": [
                 {
-                  "type": "PATTERN",
-                  "value": "[cC][oO][nN][sS][tT][rR][aA][iI][nN][tT]"
+                  "type": "SYMBOL",
+                  "name": "_constraint"
                 },
                 {
                   "type": "SYMBOL",
@@ -2488,55 +2488,42 @@
       ]
     },
     "column_constraint": {
-      "type": "CHOICE",
+      "type": "SEQ",
       "members": [
         {
-          "type": "SEQ",
+          "type": "CHOICE",
           "members": [
             {
-              "type": "PATTERN",
-              "value": "[cC][oO][nN][sS][tT][rR][aA][iI][nN][tT]"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "identifier"
-            },
-            {
-              "type": "SYMBOL",
-              "name": "column_constraint_ty"
-            },
-            {
-              "type": "CHOICE",
+              "type": "SEQ",
               "members": [
                 {
                   "type": "SYMBOL",
-                  "name": "constraint_when"
+                  "name": "_constraint"
                 },
                 {
-                  "type": "BLANK"
+                  "type": "SYMBOL",
+                  "name": "identifier"
                 }
               ]
+            },
+            {
+              "type": "BLANK"
             }
           ]
         },
         {
-          "type": "SEQ",
+          "type": "SYMBOL",
+          "name": "column_constraint_ty"
+        },
+        {
+          "type": "CHOICE",
           "members": [
             {
               "type": "SYMBOL",
-              "name": "column_constraint_ty"
+              "name": "constraint_when"
             },
             {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "constraint_when"
-                },
-                {
-                  "type": "BLANK"
-                }
-              ]
+              "type": "BLANK"
             }
           ]
         }
@@ -2660,8 +2647,8 @@
           "value": "[rR][eE][nN][aA][mM][eE]"
         },
         {
-          "type": "PATTERN",
-          "value": "[cC][oO][nN][sS][tT][rR][aA][iI][nN][tT]"
+          "type": "SYMBOL",
+          "name": "_constraint"
         },
         {
           "type": "SYMBOL",
@@ -3457,8 +3444,8 @@
           "type": "CHOICE",
           "members": [
             {
-              "type": "PATTERN",
-              "value": "[cC][oO][nN][sS][tT][rR][aA][iI][nN][tT]"
+              "type": "SYMBOL",
+              "name": "_constraint"
             },
             {
               "type": "BLANK"
@@ -7044,6 +7031,10 @@
     "_identifier": {
       "type": "PATTERN",
       "value": "[a-zA-Z0-9_]+(\\.?[a-zA-Z0-9_]+)*"
+    },
+    "_constraint": {
+      "type": "PATTERN",
+      "value": "[cC][oO][nN][sS][tT][rR][aA][iI][nN][tT]"
     }
   },
   "extras": [
