@@ -1,13 +1,9 @@
-function kw(word, aliasAsWord = true) {
-  let pattern = "";
-  for (const letter of word) {
-    pattern += `[${letter}${letter.toUpperCase()}]`;
-  }
-  let result = new RegExp(pattern);
-  if (aliasAsWord) {
-    result = alias(result, word);
-  }
-  return result;
+function kw(word) {
+  let pattern = Array.from(word).reduce(
+    (acc, letter) => acc + `[${letter}${letter.toUpperCase()}]`,
+    ""
+  );
+  return new RegExp(pattern);
 }
 
 function separated(separator, rule) {
@@ -189,7 +185,7 @@ module.exports = grammar({
       seq(
         kw("create"),
         optional($.temporary),
-        optional(kw("unlogged")),
+        optional($.unlogged),
         kw("table"),
         optional($.if_not_exists),
         $.identifier,
@@ -507,13 +503,19 @@ module.exports = grammar({
 
     sequence_increment: ($) =>
       seq(kw("increment"), optional(kw("by")), $.number),
+
     sequence_min: ($) =>
       choice(seq(kw("no"), kw("minvalue")), seq(kw("minvalue"), $.number)),
+
     sequence_max: ($) =>
       choice(seq(kw("no"), kw("maxvalue")), seq(kw("maxvalue"), $.number)),
+
     sequence_start: ($) => seq(kw("start"), optional(kw("with")), $.number),
+
     sequence_cache: ($) => seq(kw("cache"), $.number),
+
     sequence_cycle: ($) => seq(optional(kw("no")), kw("cycle")),
+
     sequence_owned: ($) =>
       seq(kw("owned"), kw("by"), choice(kw("none"), $.identifier)),
 
@@ -862,6 +864,8 @@ module.exports = grammar({
     or_replace: ($) => seq(kw("or"), kw("replace")),
 
     temporary: ($) => choice(kw("temp"), kw("temporary")),
+
+    unlogged: ($) => kw("unlogged"),
 
     if_not_exists: ($) => seq(kw("if"), kw("not"), kw("exists")),
 

@@ -292,11 +292,6 @@
     }
   },
   {
-    "type": "and",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "array_constructor",
     "named": true,
     "fields": {},
@@ -985,6 +980,10 @@
         {
           "type": "temporary",
           "named": true
+        },
+        {
+          "type": "unlogged",
+          "named": true
         }
       ]
     }
@@ -1341,11 +1340,6 @@
         }
       ]
     }
-  },
-  {
-    "type": "false",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "fk_action",
@@ -3848,11 +3842,6 @@
     "fields": {}
   },
   {
-    "type": "true",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "update_set",
     "named": true,
     "fields": {},
@@ -3987,14 +3976,6 @@
         "multiple": true,
         "required": true,
         "types": [
-          {
-            "type": "%rowtype",
-            "named": false
-          },
-          {
-            "type": "%type",
-            "named": false
-          },
           {
             "type": "[",
             "named": false
@@ -4204,14 +4185,6 @@
     "named": false
   },
   {
-    "type": "%rowtype",
-    "named": false
-  },
-  {
-    "type": "%type",
-    "named": false
-  },
-  {
     "type": "&&",
     "named": false
   },
@@ -4328,672 +4301,32 @@
     "named": false
   },
   {
-    "type": "action",
-    "named": false
-  },
-  {
-    "type": "add",
-    "named": false
-  },
-  {
-    "type": "after",
-    "named": false
-  },
-  {
-    "type": "all",
-    "named": false
-  },
-  {
-    "type": "alter",
-    "named": false
-  },
-  {
     "type": "and",
-    "named": false
-  },
-  {
-    "type": "array",
-    "named": false
-  },
-  {
-    "type": "as",
-    "named": false
-  },
-  {
-    "type": "asc",
-    "named": false
-  },
-  {
-    "type": "at",
-    "named": false
-  },
-  {
-    "type": "authorization",
-    "named": false
-  },
-  {
-    "type": "before",
-    "named": false
-  },
-  {
-    "type": "begin",
-    "named": false
-  },
-  {
-    "type": "between",
-    "named": false
-  },
-  {
-    "type": "by",
-    "named": false
-  },
-  {
-    "type": "cache",
-    "named": false
-  },
-  {
-    "type": "cascade",
-    "named": false
+    "named": true
   },
   {
     "type": "cast",
     "named": true
   },
   {
-    "type": "check",
-    "named": false
-  },
-  {
-    "type": "column",
-    "named": false
-  },
-  {
     "type": "comment",
     "named": true
   },
   {
-    "type": "concurrently",
-    "named": false
-  },
-  {
-    "type": "conflict",
-    "named": false
-  },
-  {
-    "type": "constraint",
-    "named": false
-  },
-  {
-    "type": "create",
-    "named": false
-  },
-  {
-    "type": "cross",
-    "named": false
-  },
-  {
-    "type": "current",
-    "named": false
-  },
-  {
-    "type": "current_user",
-    "named": false
-  },
-  {
-    "type": "cycle",
-    "named": false
-  },
-  {
-    "type": "data",
-    "named": false
-  },
-  {
-    "type": "day",
-    "named": false
-  },
-  {
-    "type": "declare",
-    "named": false
-  },
-  {
-    "type": "default",
-    "named": false
-  },
-  {
-    "type": "deferrable",
-    "named": false
-  },
-  {
-    "type": "deferred",
-    "named": false
-  },
-  {
-    "type": "definer",
-    "named": false
-  },
-  {
-    "type": "delete",
-    "named": false
-  },
-  {
-    "type": "desc",
-    "named": false
-  },
-  {
-    "type": "diagnostics",
-    "named": false
-  },
-  {
-    "type": "do",
-    "named": false
-  },
-  {
-    "type": "drop",
-    "named": false
-  },
-  {
-    "type": "each",
-    "named": false
-  },
-  {
-    "type": "else",
-    "named": false
-  },
-  {
-    "type": "elseif",
-    "named": false
-  },
-  {
-    "type": "elsif",
-    "named": false
-  },
-  {
-    "type": "end",
-    "named": false
-  },
-  {
-    "type": "enum",
-    "named": false
-  },
-  {
-    "type": "execute",
-    "named": false
-  },
-  {
-    "type": "exists",
-    "named": false
-  },
-  {
     "type": "false",
-    "named": false
-  },
-  {
-    "type": "first",
-    "named": false
-  },
-  {
-    "type": "for",
-    "named": false
-  },
-  {
-    "type": "foreign",
-    "named": false
-  },
-  {
-    "type": "from",
-    "named": false
-  },
-  {
-    "type": "full",
-    "named": false
-  },
-  {
-    "type": "function",
-    "named": false
-  },
-  {
-    "type": "functions",
-    "named": false
-  },
-  {
-    "type": "get",
-    "named": false
-  },
-  {
-    "type": "grant",
-    "named": false
-  },
-  {
-    "type": "group",
-    "named": false
-  },
-  {
-    "type": "having",
-    "named": false
-  },
-  {
-    "type": "hour",
-    "named": false
-  },
-  {
-    "type": "if",
-    "named": false
-  },
-  {
-    "type": "ilike",
-    "named": false
-  },
-  {
-    "type": "immediate",
-    "named": false
-  },
-  {
-    "type": "immutable",
-    "named": false
-  },
-  {
-    "type": "in",
-    "named": false
-  },
-  {
-    "type": "include",
-    "named": false
-  },
-  {
-    "type": "increment",
-    "named": false
-  },
-  {
-    "type": "index",
-    "named": false
-  },
-  {
-    "type": "initially",
-    "named": false
-  },
-  {
-    "type": "inner",
-    "named": false
-  },
-  {
-    "type": "insert",
-    "named": false
-  },
-  {
-    "type": "instead of",
-    "named": false
-  },
-  {
-    "type": "interval",
-    "named": false
-  },
-  {
-    "type": "into",
-    "named": false
-  },
-  {
-    "type": "invoker",
-    "named": false
-  },
-  {
-    "type": "is",
-    "named": false
-  },
-  {
-    "type": "is distinct from",
-    "named": false
-  },
-  {
-    "type": "is not distinct from",
-    "named": false
-  },
-  {
-    "type": "is not null",
-    "named": false
-  },
-  {
-    "type": "is null",
-    "named": false
-  },
-  {
-    "type": "isnull",
-    "named": false
-  },
-  {
-    "type": "join",
-    "named": false
-  },
-  {
-    "type": "key",
-    "named": false
-  },
-  {
-    "type": "language",
-    "named": false
-  },
-  {
-    "type": "last",
-    "named": false
-  },
-  {
-    "type": "left",
-    "named": false
-  },
-  {
-    "type": "like",
-    "named": false
-  },
-  {
-    "type": "limit",
-    "named": false
-  },
-  {
-    "type": "loop",
-    "named": false
-  },
-  {
-    "type": "materialized",
-    "named": false
-  },
-  {
-    "type": "maxvalue",
-    "named": false
-  },
-  {
-    "type": "minute",
-    "named": false
-  },
-  {
-    "type": "minvalue",
-    "named": false
-  },
-  {
-    "type": "month",
-    "named": false
-  },
-  {
-    "type": "natural",
-    "named": false
-  },
-  {
-    "type": "no",
-    "named": false
-  },
-  {
-    "type": "none",
-    "named": false
-  },
-  {
-    "type": "not",
-    "named": false
-  },
-  {
-    "type": "nothing",
-    "named": false
-  },
-  {
-    "type": "notnull",
-    "named": false
-  },
-  {
-    "type": "null",
-    "named": false
-  },
-  {
-    "type": "nulls",
-    "named": false
+    "named": true
   },
   {
     "type": "number",
     "named": true
   },
   {
-    "type": "numeric",
-    "named": false
-  },
-  {
-    "type": "offset",
-    "named": false
-  },
-  {
-    "type": "on",
-    "named": false
-  },
-  {
-    "type": "open",
-    "named": false
-  },
-  {
-    "type": "or",
-    "named": false
-  },
-  {
-    "type": "order",
-    "named": false
-  },
-  {
-    "type": "outer",
-    "named": false
-  },
-  {
-    "type": "owned",
-    "named": false
-  },
-  {
-    "type": "perform",
-    "named": false
-  },
-  {
-    "type": "primary",
-    "named": false
-  },
-  {
-    "type": "privileges",
-    "named": false
-  },
-  {
-    "type": "procedure",
-    "named": false
-  },
-  {
-    "type": "public",
-    "named": false
-  },
-  {
-    "type": "query",
-    "named": false
-  },
-  {
-    "type": "raise",
-    "named": false
-  },
-  {
-    "type": "references",
-    "named": false
-  },
-  {
-    "type": "rename",
-    "named": false
-  },
-  {
-    "type": "replace",
-    "named": false
-  },
-  {
-    "type": "restrict",
-    "named": false
-  },
-  {
-    "type": "return",
-    "named": false
-  },
-  {
-    "type": "returning",
-    "named": false
-  },
-  {
-    "type": "returns",
-    "named": false
-  },
-  {
-    "type": "reverse",
-    "named": false
-  },
-  {
-    "type": "right",
-    "named": false
-  },
-  {
-    "type": "routine",
-    "named": false
-  },
-  {
-    "type": "row",
-    "named": false
-  },
-  {
-    "type": "rows",
-    "named": false
-  },
-  {
-    "type": "schema",
-    "named": false
-  },
-  {
-    "type": "second",
-    "named": false
-  },
-  {
-    "type": "security",
-    "named": false
-  },
-  {
-    "type": "select",
-    "named": false
-  },
-  {
-    "type": "sequence",
-    "named": false
-  },
-  {
-    "type": "sequences",
-    "named": false
-  },
-  {
-    "type": "session_user",
-    "named": false
-  },
-  {
-    "type": "set",
-    "named": false
-  },
-  {
-    "type": "setof",
-    "named": false
-  },
-  {
-    "type": "stable",
-    "named": false
-  },
-  {
-    "type": "start",
-    "named": false
-  },
-  {
-    "type": "statement",
-    "named": false
-  },
-  {
-    "type": "strict",
-    "named": false
-  },
-  {
-    "type": "table",
-    "named": false
-  },
-  {
-    "type": "tables",
-    "named": false
-  },
-  {
-    "type": "temp",
-    "named": false
-  },
-  {
-    "type": "temporary",
-    "named": false
-  },
-  {
-    "type": "then",
-    "named": false
-  },
-  {
-    "type": "time",
-    "named": false
-  },
-  {
-    "type": "to",
-    "named": false
-  },
-  {
-    "type": "trigger",
-    "named": false
-  },
-  {
     "type": "true",
-    "named": false
-  },
-  {
-    "type": "truncate",
-    "named": false
-  },
-  {
-    "type": "type",
-    "named": false
-  },
-  {
-    "type": "unique",
-    "named": false
+    "named": true
   },
   {
     "type": "unlogged",
-    "named": false
-  },
-  {
-    "type": "update",
-    "named": false
-  },
-  {
-    "type": "using",
-    "named": false
-  },
-  {
-    "type": "values",
-    "named": false
-  },
-  {
-    "type": "volatile",
-    "named": false
-  },
-  {
-    "type": "when",
-    "named": false
-  },
-  {
-    "type": "where",
-    "named": false
-  },
-  {
-    "type": "with",
-    "named": false
-  },
-  {
-    "type": "year",
-    "named": false
-  },
-  {
-    "type": "zone",
-    "named": false
+    "named": true
   },
   {
     "type": "||",
