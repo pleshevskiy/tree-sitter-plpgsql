@@ -132,7 +132,7 @@ module.exports = grammar({
     insert_items: ($) =>
       choice(
         seq(kw("default"), kw("values")),
-        seq(kw("values"), $.insert_values, repeat(seq(",", $.insert_values))),
+        seq(kw("values"), commaSep1($.insert_values)),
         $.select_statement,
         seq("(", $.select_statement, ")")
       ),
