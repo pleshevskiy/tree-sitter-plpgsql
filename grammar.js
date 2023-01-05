@@ -875,7 +875,7 @@ module.exports = grammar({
 
     _type: ($) =>
       seq(
-        choice($.predefined_types, $.identifier),
+        choice($.predefined_type, $.identifier),
         optional(choice(repeat1(seq("[", "]")), kw("%rowtype"), kw("%type")))
       ),
 
@@ -907,9 +907,15 @@ module.exports = grammar({
     //   | VARCHAR l = type_length? { VarChar(l) }
     //   (* | schema_qualified_name_nontype (LEFT_PAREN vex (COMMA vex)* RIGHT_PAREN)? *)
     // TODO(chrde): moar types!!
-    predefined_types: ($) => choice(seq(kw("numeric"), optional($.precision))),
+    predefined_type: ($) =>
+      choice(
+        seq(kw("numeric"), optional($.precision)),
+        seq(kw("varchar"), optional($.type_length))
+      ),
 
     precision: ($) => seq("(", $.number, optional(seq(",", $.number)), ")"),
+
+    type_length: ($) => seq("(", $.number, ")"),
 
     string: ($) =>
       seq("'", repeat(choice(prec(1, /''/), prec(2, /[^']/))), "'"),
