@@ -1,18 +1,84 @@
 ================================================================================
 basic
 ================================================================================
-insert into my_table values(1);
+insert into my_table values (1);
 --------------------------------------------------------------------------------
 
 (source_file
   (insert_statement
     (identifier)
     (insert_items
-      (insert_item
-        (number)))))
+      (insert_values
+        (insert_item (number))
+      )
+    )
+  )
+)
 
 ================================================================================
-alias
+insert into table by specified columns
+================================================================================
+insert into my_table (name, email, display_name) values
+  ('foo', 'bar@biz.baz', 'Foo bar');
+--------------------------------------------------------------------------------
+
+(source_file
+  (insert_statement
+    (identifier)
+    (columns
+      (identifier)
+      (identifier)
+      (identifier)
+    )
+    (insert_items
+      (insert_values
+        (insert_item (string))
+        (insert_item (string))
+        (insert_item (string))
+      )
+    )
+  )
+)
+
+================================================================================
+insert into table by specified columns with many values
+================================================================================
+insert into my_table (name, email, display_name) values
+  ('foo', 'bar@biz.baz', 'Foo bar'),
+  ('foo', 'bar@biz.baz', 'Foo bar'),
+  ('foo', 'bar@biz.baz', 'Foo bar');
+--------------------------------------------------------------------------------
+
+(source_file
+  (insert_statement
+    (identifier)
+    (columns
+      (identifier)
+      (identifier)
+      (identifier)
+    )
+    (insert_items
+      (insert_values
+        (insert_item (string))
+        (insert_item (string))
+        (insert_item (string))
+      )
+      (insert_values
+        (insert_item (string))
+        (insert_item (string))
+        (insert_item (string))
+      )
+      (insert_values
+        (insert_item (string))
+        (insert_item (string))
+        (insert_item (string))
+      )
+    )
+  )
+)
+
+================================================================================
+insert into table with alias
 ================================================================================
 insert into foo.my_table as alias values(1);
 --------------------------------------------------------------------------------
@@ -20,14 +86,17 @@ insert into foo.my_table as alias values(1);
 (source_file
   (insert_statement
     (identifier)
-    (as
-      (identifier))
+    (as (identifier))
     (insert_items
-      (insert_item
-        (number)))))
+      (insert_values
+        (insert_item (number))
+      )
+    )
+  )
+)
 
 ================================================================================
-default values
+insert into default values
 ================================================================================
 insert into foo.my_table default values;
 --------------------------------------------------------------------------------
@@ -35,45 +104,54 @@ insert into foo.my_table default values;
 (source_file
   (insert_statement
     (identifier)
-    (insert_items)))
+    (insert_items)
+  )
+)
 
 ================================================================================
-many values
+insert into with many value items
 ================================================================================
-insert into foo.my_table values(1, 2);
+insert into foo.my_table values (1, 2);
 --------------------------------------------------------------------------------
 
 (source_file
   (insert_statement
     (identifier)
     (insert_items
-      (insert_item
-        (number))
-      (insert_item
-        (number)))))
+      (insert_values
+        (insert_item (number))
+        (insert_item (number))
+      )
+    )
+  )
+)
 
 ================================================================================
-different kind of values
+insert into with different kind of value items
 ================================================================================
-insert into foo.my_table values(1, DEFAULT, (select 1, 2));
+insert into foo.my_table values (1, DEFAULT, (select 1, 2));
 --------------------------------------------------------------------------------
 
 (source_file
   (insert_statement
     (identifier)
     (insert_items
-      (insert_item
-        (number))
-      (insert_item)
-      (insert_item
-        (select_statement
-          (select_item
-            (number))
-          (select_item
-            (number)))))))
+      (insert_values
+        (insert_item (number))
+        (insert_item)
+        (insert_item
+          (select_statement
+            (select_item (number))
+            (select_item (number))
+          )
+        )
+      )
+    )
+  )
+)
 
 ================================================================================
-insert from select
+insert into from select
 ================================================================================
 insert into foo.my_table select column1 from foo bar;
 --------------------------------------------------------------------------------
@@ -83,16 +161,22 @@ insert into foo.my_table select column1 from foo bar;
     (identifier)
     (insert_items
       (select_statement
-        (select_item
-          (identifier))
+        (select_item (identifier))
         (select_from
           (from_item
             (from_table
               (identifier)
-              (identifier))))))))
+              (identifier)
+            )
+          )
+        )
+      )
+    )
+  )
+)
 
 ================================================================================
-insert from select(1)
+insert into a table with the select enclosed in parentheses
 ================================================================================
 insert into foo.my_table (select column1 from foo bar);
 --------------------------------------------------------------------------------
@@ -102,37 +186,46 @@ insert into foo.my_table (select column1 from foo bar);
     (identifier)
     (insert_items
       (select_statement
-        (select_item
-          (identifier))
+        (select_item (identifier))
         (select_from
           (from_item
             (from_table
               (identifier)
-              (identifier))))))))
+              (identifier)
+            )
+          )
+        )
+      )
+    )
+  )
+)
 
 ================================================================================
-returning
+insert into with returning clause
 ================================================================================
-insert into foo values(1) returning *, 1;
+insert into foo values (1) returning *, 1;
 --------------------------------------------------------------------------------
 
 (source_file
   (insert_statement
     (identifier)
     (insert_items
-      (insert_item
-        (number)))
+      (insert_values
+        (insert_item (number))
+      )
+    )
     (returning
-      (select_item
-        (star))
-      (select_item
-        (number)))))
+      (select_item (star))
+      (select_item (number))
+    )
+  )
+)
 
 ================================================================================
-with cte
+insert into using with clause
 ================================================================================
 with foo as (select * from bar)
-insert into my_table values(1);
+insert into my_table values (1);
 --------------------------------------------------------------------------------
 
 (source_file
@@ -141,39 +234,55 @@ insert into my_table values(1);
       (with_query_item
         (identifier)
         (select_statement
-          (select_item
-            (star))
+          (select_item (star))
           (select_from
             (from_item
               (from_table
-                (identifier)))))))
+                (identifier)
+              )
+            )
+          )
+        )
+      )
+    )
     (identifier)
     (insert_items
-      (insert_item
-        (number)))))
+      (insert_values
+        (insert_item (number))
+      )
+    )
+  )
+)
 
 ================================================================================
-returning into
+insert into statement with returning into clause
 ================================================================================
-insert into foo(bar, baz) select * from another
+insert into foo (bar, baz) select * from another
 returning id into _var;
 --------------------------------------------------------------------------------
 
 (source_file
   (insert_statement
     (identifier)
-    (identifier)
-    (identifier)
+    (columns
+      (identifier)
+      (identifier)
+    )
     (insert_items
       (select_statement
-        (select_item
-          (star))
+        (select_item (star))
         (select_from
           (from_item
             (from_table
-              (identifier))))))
+              (identifier)
+            )
+          )
+        )
+      )
+    )
     (returning
-      (select_item
-        (identifier)))
-    (into
-      (identifier))))
+      (select_item (identifier))
+    )
+    (into (identifier))
+  )
+)

@@ -119,7 +119,7 @@ with new as (delete from productes returning *) select 1;
       (number))))
 
 ================================================================================
-with insert
+select statement using with clause with insert into
 ================================================================================
 with new as (insert into foo values(1)) select 1;
 --------------------------------------------------------------------------------
@@ -132,10 +132,16 @@ with new as (insert into foo values(1)) select 1;
         (insert_statement
           (identifier)
           (insert_items
-            (insert_item
-              (number))))))
-    (select_item
-      (number))))
+            (insert_values
+              (insert_item (number))
+            )
+          )
+        )
+      )
+    )
+    (select_item (number))
+  )
+)
 
 ================================================================================
 with update
