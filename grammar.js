@@ -25,19 +25,45 @@ module.exports = grammar({
         optional($._if_not_exists),
         $.table_reference,
         $.column_definitions
+        // TODO: INHERITS
+        // TODO: PARTITION BY
+        // TODO: USING
+        // TODO: WITH
+        // TODO: ON COMMIT
+        // TODO: TABLESPACE
       ),
 
     column_definitions: ($) =>
       seq(
         "(",
-        optional(commaSepRepeat1(choice($.column_definition /*$.constraint*/))),
+        optional(
+          commaSepRepeat1(choice($.column_definition /*, $.table_constraint*/))
+        ),
         ")"
       ),
 
     column_definition: ($) =>
-      seq(field("name", $.identifier), field("datatype", $._type)),
+      seq(
+        field("name", $.identifier),
+        field("datatype", $._type),
+        repeat($.column_constraint)
+      ),
 
-    //constraint: $ => seq(),
+    column_constraint: ($) =>
+      seq(
+        optional(seq($.keyword_constraint, field("name", $.identifier))),
+        choice(
+          $._not_null,
+          $.keyword_null,
+          seq($.keyword_default, $._expression)
+          // TODO: CHECK
+          // TODO: GENERATED
+          // TODO: UNIQUE
+          // TODO: PRIMARY KEY
+          // TODO: FOREIGN KEY
+        )
+        // TODO: DEFERRABLE
+      ),
 
     table_reference: ($) =>
       seq(
@@ -45,8 +71,24 @@ module.exports = grammar({
         field("name", $.identifier)
       ),
 
+    _expression: ($) =>
+      choice(
+        $.literal
+        // TODO: add more types
+      ),
+
+    literal: ($) =>
+      choice(
+        $._number,
+        $._literal_string,
+        $.keyword_true,
+        $.keyword_false,
+        $.keyword_null
+      ),
+
     // keywords
     _if_not_exists: ($) => seq($.keyword_if, $.keyword_not, $.keyword_exists),
+    _not_null: ($) => seq($.keyword_not, $.keyword_null),
 
     keyword_create: (_) => mkKeyword("create"),
     keyword_table: (_) => mkKeyword("table"),
@@ -55,6 +97,11 @@ module.exports = grammar({
     keyword_if: (_) => mkKeyword("if"),
     keyword_not: (_) => mkKeyword("not"),
     keyword_exists: (_) => mkKeyword("exists"),
+    keyword_null: (_) => mkKeyword("null"),
+    keyword_constraint: (_) => mkKeyword("constraint"),
+    keyword_default: (_) => mkKeyword("default"),
+    keyword_true: (_) => mkKeyword("true"),
+    keyword_false: (_) => mkKeyword("false"),
 
     // References: https://www.postgresql.org/docs/15/datatype.html
     _type: ($) =>
@@ -177,10 +224,8 @@ module.exports = grammar({
         seq(mkKeyword("timestamp"), $._with_time_zone)
       ),
 
-    _without_time_zone: ($) => seq($._keyword_without, $._keyword_time_zone),
-    _with_time_zone: ($) => seq($._keyword_with, $._keyword_time_zone),
-    _keyword_without: (_) => mkKeyword("without"),
-    _keyword_with: (_) => mkKeyword("with"),
+    _without_time_zone: ($) => seq(mkKeyword("without"), $._keyword_time_zone),
+    _with_time_zone: ($) => seq(mkKeyword("with"), $._keyword_time_zone),
     _keyword_time_zone: (_) => seq(mkKeyword("time"), mkKeyword("zone")),
 
     // References: https://www.postgresql.org/docs/15/datatype-uuid.html
@@ -198,9 +243,10 @@ module.exports = grammar({
     // https://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment
     marginalia: (_) => seq("/*", /[^*]*\*+(?:[^/*][^*]*\*+)*/, "/"),
 
+    _literal_string: ($) => choice(seq("'", /[^']*/, "'")),
     _number: (_) => /\d+/,
 
-    identifier: ($) => choice($._identifier, seq('"', $._identifier, '"')),
+    identifier: ($) => choice($._identifier, seq('"', /[^"]+/, '"')),
 
     _identifier: (_) => /([a-zA-Z_][0-9a-zA-Z_]*)/,
   },
