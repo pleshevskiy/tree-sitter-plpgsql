@@ -36,3 +36,77 @@ create table public.foo ();
     )
   )
 )
+
+================================================================================
+Create an empty temporary table
+================================================================================
+create temporary table foo ();
+create temp table foo ();
+--------------------------------------------------------------------------------
+
+(source_file
+  (statement
+    (create_table
+      (keyword_create)
+      (keyword_temporary)
+      (keyword_table)
+      (table_reference
+        name: (identifier)
+      )
+      (column_definitions)
+    )
+  )
+  (statement
+    (create_table
+      (keyword_create)
+      (keyword_temporary)
+      (keyword_table)
+      (table_reference
+        name: (identifier)
+      )
+      (column_definitions)
+    )
+  )
+)
+
+================================================================================
+Create an empty unlogged table
+================================================================================
+create unlogged table foo ();
+--------------------------------------------------------------------------------
+
+(source_file
+  (statement
+    (create_table
+      (keyword_create)
+      (keyword_unlogged)
+      (keyword_table)
+      (table_reference
+        name: (identifier)
+      )
+      (column_definitions)
+    )
+  )
+)
+
+================================================================================
+Create an empty table if not exists
+================================================================================
+create table if not exists foo ();
+--------------------------------------------------------------------------------
+
+(source_file
+  (statement
+    (create_table
+      (keyword_create)
+      (keyword_table)
+      (keyword_if)
+      (keyword_not)
+      (keyword_exists)
+      (table_reference
+        name: (identifier)
+      )
+      (column_definitions)
+    )
+  )
+)
