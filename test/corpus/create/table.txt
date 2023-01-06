@@ -1,0 +1,38 @@
+================================================================================
+Create an empty table
+================================================================================
+create table foo ();
+--------------------------------------------------------------------------------
+
+(source_file
+  (statement
+    (create_table
+      (keyword_create)
+      (keyword_table)
+      (table_reference
+        name: (identifier)
+      )
+      (column_definitions)
+    )
+  )
+)
+
+================================================================================
+Create an empty table in specified schema
+================================================================================
+create table public.foo ();
+--------------------------------------------------------------------------------
+
+(source_file
+  (statement
+    (create_table
+      (keyword_create)
+      (keyword_table)
+      (table_reference
+        schema: (identifier)
+        name: (identifier)
+      )
+      (column_definitions)
+    )
+  )
+)

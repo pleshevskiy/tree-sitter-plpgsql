@@ -8,8 +8,7 @@ set -xe
 if [ ! -z $(git diff --cached --name-only | grep -e "^grammar.js$") ]
 then
   make build
-  # TODO: Enable when performance improves
-  # make build-wasm
+  make build-wasm
   git add src bindings *.wasm
 fi
 
