@@ -110,3 +110,60 @@ create table if not exists foo ();
     )
   )
 )
+
+================================================================================
+Create a table with different columns
+================================================================================
+create table foo (
+  c1  text,
+  c2  boolean,
+  c3  numeric(1),
+  c4  timestamp with time zone,
+  c5  varchar(120),
+  c6  uuid
+);
+--------------------------------------------------------------------------------
+
+(source_file
+  (statement
+    (create_table
+      (keyword_create)
+      (keyword_table)
+      (table_reference
+        name: (identifier)
+      )
+      (column_definitions
+        (column_definition
+          name: (identifier)
+          datatype: (keyword_text)
+        )
+        (column_definition
+          name: (identifier)
+          datatype: (keyword_boolean)
+        )
+        (column_definition
+          name: (identifier)
+          datatype: (numeric
+            (keyword_numeric)
+            precision: (literal)
+          )
+        )
+        (column_definition
+          name: (identifier)
+          datatype: (keyword_timestamptz)
+        )
+        (column_definition
+          name: (identifier)
+          datatype: (varchar
+            (keyword_varchar)
+            size: (literal)
+          )
+        )
+        (column_definition
+          name: (identifier)
+          datatype: (keyword_uuid)
+        )
+      )
+    )
+  )
+)
