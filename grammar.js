@@ -92,26 +92,6 @@ module.exports = grammar({
         $.keyword_null
       ),
 
-    // keywords
-    _if_not_exists: ($) => seq($.keyword_if, $.keyword_not, $.keyword_exists),
-    _not_null: ($) => seq($.keyword_not, $.keyword_null),
-
-    keyword_create: (_) => mkKeyword("create"),
-    keyword_table: (_) => mkKeyword("table"),
-    keyword_temporary: (_) => choice(mkKeyword("temporary"), mkKeyword("temp")),
-    keyword_unlogged: (_) => mkKeyword("unlogged"),
-    keyword_if: (_) => mkKeyword("if"),
-    keyword_not: (_) => mkKeyword("not"),
-    keyword_exists: (_) => mkKeyword("exists"),
-    keyword_null: (_) => mkKeyword("null"),
-    keyword_constraint: (_) => mkKeyword("constraint"),
-    keyword_default: (_) => mkKeyword("default"),
-    keyword_true: (_) => mkKeyword("true"),
-    keyword_false: (_) => mkKeyword("false"),
-    keyword_nulls: (_) => mkKeyword("nulls"),
-    keyword_distinct: (_) => mkKeyword("distinct"),
-    keyword_unique: (_) => mkKeyword("unique"),
-
     // References: https://www.postgresql.org/docs/15/datatype.html
     _type: ($) =>
       choice(
@@ -193,8 +173,35 @@ module.exports = grammar({
     // References: https://www.postgresql.org/docs/15/datatype-json.html
     _type_json: ($) => choice($.keyword_json, $.keyword_jsonb),
 
-    keyword_boolean: (_) => mkKeyword("boolean"),
+    // keywords
+    _if_not_exists: ($) => seq($.keyword_if, $.keyword_not, $.keyword_exists),
+    _not_null: ($) => seq($.keyword_not, $.keyword_null),
+    _without_time_zone: ($) => seq(mkKeyword("without"), $._keyword_time_zone),
+    _with_time_zone: ($) => seq(mkKeyword("with"), $._keyword_time_zone),
+    _keyword_time_zone: (_) => seq(mkKeyword("time"), mkKeyword("zone")),
 
+    keyword_create: (_) => mkKeyword("create"),
+    keyword_table: (_) => mkKeyword("table"),
+    keyword_temporary: (_) => choice(mkKeyword("temporary"), mkKeyword("temp")),
+    keyword_unlogged: (_) => mkKeyword("unlogged"),
+    keyword_if: (_) => mkKeyword("if"),
+    keyword_not: (_) => mkKeyword("not"),
+    keyword_exists: (_) => mkKeyword("exists"),
+    keyword_null: (_) => mkKeyword("null"),
+    keyword_constraint: (_) => mkKeyword("constraint"),
+    keyword_default: (_) => mkKeyword("default"),
+    keyword_true: (_) => mkKeyword("true"),
+    keyword_false: (_) => mkKeyword("false"),
+    keyword_nulls: (_) => mkKeyword("nulls"),
+    keyword_distinct: (_) => mkKeyword("distinct"),
+    keyword_unique: (_) => mkKeyword("unique"),
+    // References: https://www.postgresql.org/docs/15/datatype-xml.html
+    keyword_xml: (_) => mkKeyword("xml"),
+    // References: https://www.postgresql.org/docs/15/datatype-uuid.html
+    keyword_uuid: (_) => mkKeyword("uuid"),
+    keyword_json: (_) => mkKeyword("json"),
+    keyword_jsonb: (_) => mkKeyword("jsonb"),
+    keyword_boolean: (_) => mkKeyword("boolean"),
     keyword_smallint: (_) => mkKeyword("smallint"),
     keyword_integer: (_) => mkKeyword("integer"),
     keyword_bigint: (_) => mkKeyword("bigint"),
@@ -204,10 +211,8 @@ module.exports = grammar({
     keyword_smallserial: (_) => mkKeyword("smallserial"),
     keyword_serial: (_) => mkKeyword("serial"),
     keyword_bigserial: (_) => mkKeyword("bigserial"),
-
     // References: https://www.postgresql.org/docs/15/datatype-money.html
     keyword_money: (_) => mkKeyword("money"),
-
     keyword_text: (_) => mkKeyword("text"),
     keyword_char: (_) => choice(mkKeyword("character"), mkKeyword("char")),
     keyword_varchar: (_) =>
@@ -215,9 +220,7 @@ module.exports = grammar({
         mkKeyword("varchar"),
         seq(mkKeyword("character", mkKeyword("varying")))
       ),
-
     keyword_bytea: (_) => mkKeyword("bytea"),
-
     keyword_date: (_) => mkKeyword("date"),
     keyword_datetime: (_) => mkKeyword("datetime"),
     keyword_time: ($) =>
@@ -232,19 +235,6 @@ module.exports = grammar({
         mkKeyword("timestamptz"),
         seq(mkKeyword("timestamp"), $._with_time_zone)
       ),
-
-    _without_time_zone: ($) => seq(mkKeyword("without"), $._keyword_time_zone),
-    _with_time_zone: ($) => seq(mkKeyword("with"), $._keyword_time_zone),
-    _keyword_time_zone: (_) => seq(mkKeyword("time"), mkKeyword("zone")),
-
-    // References: https://www.postgresql.org/docs/15/datatype-uuid.html
-    keyword_uuid: (_) => mkKeyword("uuid"),
-
-    // References: https://www.postgresql.org/docs/15/datatype-xml.html
-    keyword_xml: (_) => mkKeyword("xml"),
-
-    keyword_json: (_) => mkKeyword("json"),
-    keyword_jsonb: (_) => mkKeyword("jsonb"),
 
     // -------
 

@@ -361,105 +361,6 @@
         }
       ]
     },
-    "_if_not_exists": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "keyword_if"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "keyword_not"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "keyword_exists"
-        }
-      ]
-    },
-    "_not_null": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "SYMBOL",
-          "name": "keyword_not"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "keyword_null"
-        }
-      ]
-    },
-    "keyword_create": {
-      "type": "PATTERN",
-      "value": "create|CREATE"
-    },
-    "keyword_table": {
-      "type": "PATTERN",
-      "value": "table|TABLE"
-    },
-    "keyword_temporary": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "PATTERN",
-          "value": "temporary|TEMPORARY"
-        },
-        {
-          "type": "PATTERN",
-          "value": "temp|TEMP"
-        }
-      ]
-    },
-    "keyword_unlogged": {
-      "type": "PATTERN",
-      "value": "unlogged|UNLOGGED"
-    },
-    "keyword_if": {
-      "type": "PATTERN",
-      "value": "if|IF"
-    },
-    "keyword_not": {
-      "type": "PATTERN",
-      "value": "not|NOT"
-    },
-    "keyword_exists": {
-      "type": "PATTERN",
-      "value": "exists|EXISTS"
-    },
-    "keyword_null": {
-      "type": "PATTERN",
-      "value": "null|NULL"
-    },
-    "keyword_constraint": {
-      "type": "PATTERN",
-      "value": "constraint|CONSTRAINT"
-    },
-    "keyword_default": {
-      "type": "PATTERN",
-      "value": "default|DEFAULT"
-    },
-    "keyword_true": {
-      "type": "PATTERN",
-      "value": "true|TRUE"
-    },
-    "keyword_false": {
-      "type": "PATTERN",
-      "value": "false|FALSE"
-    },
-    "keyword_nulls": {
-      "type": "PATTERN",
-      "value": "nulls|NULLS"
-    },
-    "keyword_distinct": {
-      "type": "PATTERN",
-      "value": "distinct|DISTINCT"
-    },
-    "keyword_unique": {
-      "type": "PATTERN",
-      "value": "unique|UNIQUE"
-    },
     "_type": {
       "type": "CHOICE",
       "members": [
@@ -954,6 +855,160 @@
         }
       ]
     },
+    "_if_not_exists": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "keyword_if"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "keyword_not"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "keyword_exists"
+        }
+      ]
+    },
+    "_not_null": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "keyword_not"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "keyword_null"
+        }
+      ]
+    },
+    "_without_time_zone": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "without|WITHOUT"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_keyword_time_zone"
+        }
+      ]
+    },
+    "_with_time_zone": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "with|WITH"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_keyword_time_zone"
+        }
+      ]
+    },
+    "_keyword_time_zone": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "time|TIME"
+        },
+        {
+          "type": "PATTERN",
+          "value": "zone|ZONE"
+        }
+      ]
+    },
+    "keyword_create": {
+      "type": "PATTERN",
+      "value": "create|CREATE"
+    },
+    "keyword_table": {
+      "type": "PATTERN",
+      "value": "table|TABLE"
+    },
+    "keyword_temporary": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "temporary|TEMPORARY"
+        },
+        {
+          "type": "PATTERN",
+          "value": "temp|TEMP"
+        }
+      ]
+    },
+    "keyword_unlogged": {
+      "type": "PATTERN",
+      "value": "unlogged|UNLOGGED"
+    },
+    "keyword_if": {
+      "type": "PATTERN",
+      "value": "if|IF"
+    },
+    "keyword_not": {
+      "type": "PATTERN",
+      "value": "not|NOT"
+    },
+    "keyword_exists": {
+      "type": "PATTERN",
+      "value": "exists|EXISTS"
+    },
+    "keyword_null": {
+      "type": "PATTERN",
+      "value": "null|NULL"
+    },
+    "keyword_constraint": {
+      "type": "PATTERN",
+      "value": "constraint|CONSTRAINT"
+    },
+    "keyword_default": {
+      "type": "PATTERN",
+      "value": "default|DEFAULT"
+    },
+    "keyword_true": {
+      "type": "PATTERN",
+      "value": "true|TRUE"
+    },
+    "keyword_false": {
+      "type": "PATTERN",
+      "value": "false|FALSE"
+    },
+    "keyword_nulls": {
+      "type": "PATTERN",
+      "value": "nulls|NULLS"
+    },
+    "keyword_distinct": {
+      "type": "PATTERN",
+      "value": "distinct|DISTINCT"
+    },
+    "keyword_unique": {
+      "type": "PATTERN",
+      "value": "unique|UNIQUE"
+    },
+    "keyword_xml": {
+      "type": "PATTERN",
+      "value": "xml|XML"
+    },
+    "keyword_uuid": {
+      "type": "PATTERN",
+      "value": "uuid|UUID"
+    },
+    "keyword_json": {
+      "type": "PATTERN",
+      "value": "json|JSON"
+    },
+    "keyword_jsonb": {
+      "type": "PATTERN",
+      "value": "jsonb|JSONB"
+    },
     "keyword_boolean": {
       "type": "PATTERN",
       "value": "boolean|BOOLEAN"
@@ -1117,61 +1172,6 @@
           ]
         }
       ]
-    },
-    "_without_time_zone": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "PATTERN",
-          "value": "without|WITHOUT"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_keyword_time_zone"
-        }
-      ]
-    },
-    "_with_time_zone": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "PATTERN",
-          "value": "with|WITH"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_keyword_time_zone"
-        }
-      ]
-    },
-    "_keyword_time_zone": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "PATTERN",
-          "value": "time|TIME"
-        },
-        {
-          "type": "PATTERN",
-          "value": "zone|ZONE"
-        }
-      ]
-    },
-    "keyword_uuid": {
-      "type": "PATTERN",
-      "value": "uuid|UUID"
-    },
-    "keyword_xml": {
-      "type": "PATTERN",
-      "value": "xml|XML"
-    },
-    "keyword_json": {
-      "type": "PATTERN",
-      "value": "json|JSON"
-    },
-    "keyword_jsonb": {
-      "type": "PATTERN",
-      "value": "jsonb|JSONB"
     },
     "line_comment": {
       "type": "SEQ",
