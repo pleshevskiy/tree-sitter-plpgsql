@@ -55,7 +55,13 @@ module.exports = grammar({
         choice(
           $._not_null,
           $.keyword_null,
-          seq($.keyword_default, $._expression)
+          seq($.keyword_default, $._expression),
+          seq(
+            $.keyword_unique,
+            optional(
+              seq($.keyword_nulls, optional($.keyword_not), $.keyword_distinct)
+            )
+          )
           // TODO: CHECK
           // TODO: GENERATED
           // TODO: UNIQUE
@@ -102,6 +108,9 @@ module.exports = grammar({
     keyword_default: (_) => mkKeyword("default"),
     keyword_true: (_) => mkKeyword("true"),
     keyword_false: (_) => mkKeyword("false"),
+    keyword_nulls: (_) => mkKeyword("nulls"),
+    keyword_distinct: (_) => mkKeyword("distinct"),
+    keyword_unique: (_) => mkKeyword("unique"),
 
     // References: https://www.postgresql.org/docs/15/datatype.html
     _type: ($) =>

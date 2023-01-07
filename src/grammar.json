@@ -242,6 +242,48 @@
                   "name": "_expression"
                 }
               ]
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "keyword_unique"
+                },
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "SYMBOL",
+                          "name": "keyword_nulls"
+                        },
+                        {
+                          "type": "CHOICE",
+                          "members": [
+                            {
+                              "type": "SYMBOL",
+                              "name": "keyword_not"
+                            },
+                            {
+                              "type": "BLANK"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "keyword_distinct"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "BLANK"
+                    }
+                  ]
+                }
+              ]
             }
           ]
         }
@@ -405,6 +447,18 @@
     "keyword_false": {
       "type": "PATTERN",
       "value": "false|FALSE"
+    },
+    "keyword_nulls": {
+      "type": "PATTERN",
+      "value": "nulls|NULLS"
+    },
+    "keyword_distinct": {
+      "type": "PATTERN",
+      "value": "distinct|DISTINCT"
+    },
+    "keyword_unique": {
+      "type": "PATTERN",
+      "value": "unique|UNIQUE"
     },
     "_type": {
       "type": "CHOICE",

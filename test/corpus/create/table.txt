@@ -174,7 +174,7 @@ Create a table with column constraints
 create table foo (
   c1  text  not null,
   c2  text  null,
-  c2  text  not null default 'hello'
+  c3  text  not null default 'hello'
 );
 --------------------------------------------------------------------------------
 
@@ -225,7 +225,8 @@ Create a table with named column constraints
 create table foo (
   c1  text  constraint strong_c1 not null,
   c2  text  constraint weak_c2 null,
-  c3  text  constraint "c3 with power" not null constraint "c2 set default hello" default 'hello'
+  c3  text  constraint "c3 with power" not null constraint "c2 set default hello" default 'hello',
+  c4  text  constraint "c4 unique" unique nulls not distinct
 );
 --------------------------------------------------------------------------------
 
@@ -271,6 +272,18 @@ create table foo (
             name: (identifier)
             (keyword_default)
             (literal)
+          )
+        )
+        (column_definition
+          name: (identifier)
+          datatype: (keyword_text)
+          (column_constraint
+            (keyword_constraint)
+            name: (identifier)
+            (keyword_unique)
+            (keyword_nulls)
+            (keyword_not)
+            (keyword_distinct)
           )
         )
       )
