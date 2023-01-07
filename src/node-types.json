@@ -43,6 +43,16 @@
             "named": true
           }
         ]
+      },
+      "refcolumn": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
       }
     },
     "children": {
@@ -58,7 +68,23 @@
           "named": true
         },
         {
+          "type": "keyword_delete",
+          "named": true
+        },
+        {
           "type": "keyword_distinct",
+          "named": true
+        },
+        {
+          "type": "keyword_full",
+          "named": true
+        },
+        {
+          "type": "keyword_key",
+          "named": true
+        },
+        {
+          "type": "keyword_match",
           "named": true
         },
         {
@@ -74,7 +100,23 @@
           "named": true
         },
         {
-          "type": "keyword_primary_key",
+          "type": "keyword_on",
+          "named": true
+        },
+        {
+          "type": "keyword_partial",
+          "named": true
+        },
+        {
+          "type": "keyword_primary",
+          "named": true
+        },
+        {
+          "type": "keyword_references",
+          "named": true
+        },
+        {
+          "type": "keyword_simple",
           "named": true
         },
         {
@@ -82,7 +124,19 @@
           "named": true
         },
         {
+          "type": "keyword_update",
+          "named": true
+        },
+        {
           "type": "literal",
+          "named": true
+        },
+        {
+          "type": "referencial_action",
+          "named": true
+        },
+        {
+          "type": "table_reference",
           "named": true
         }
       ]
@@ -326,11 +380,6 @@
     "fields": {}
   },
   {
-    "type": "keyword_primary_key",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "keyword_temporary",
     "named": true,
     "fields": {}
@@ -414,6 +463,49 @@
       "types": [
         {
           "type": "keyword_numeric",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "referencial_action",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "identifier",
+          "named": true
+        },
+        {
+          "type": "keyword_action",
+          "named": true
+        },
+        {
+          "type": "keyword_cascade",
+          "named": true
+        },
+        {
+          "type": "keyword_default",
+          "named": true
+        },
+        {
+          "type": "keyword_no",
+          "named": true
+        },
+        {
+          "type": "keyword_null",
+          "named": true
+        },
+        {
+          "type": "keyword_restrict",
+          "named": true
+        },
+        {
+          "type": "keyword_set",
           "named": true
         }
       ]
@@ -542,6 +634,10 @@
     "named": false
   },
   {
+    "type": "keyword_action",
+    "named": true
+  },
+  {
     "type": "keyword_bigint",
     "named": true
   },
@@ -555,6 +651,10 @@
   },
   {
     "type": "keyword_bytea",
+    "named": true
+  },
+  {
+    "type": "keyword_cascade",
     "named": true
   },
   {
@@ -582,6 +682,10 @@
     "named": true
   },
   {
+    "type": "keyword_delete",
+    "named": true
+  },
+  {
     "type": "keyword_distinct",
     "named": true
   },
@@ -591,6 +695,14 @@
   },
   {
     "type": "keyword_false",
+    "named": true
+  },
+  {
+    "type": "keyword_foreign",
+    "named": true
+  },
+  {
+    "type": "keyword_full",
     "named": true
   },
   {
@@ -610,7 +722,19 @@
     "named": true
   },
   {
+    "type": "keyword_key",
+    "named": true
+  },
+  {
+    "type": "keyword_match",
+    "named": true
+  },
+  {
     "type": "keyword_money",
+    "named": true
+  },
+  {
+    "type": "keyword_no",
     "named": true
   },
   {
@@ -630,11 +754,39 @@
     "named": true
   },
   {
+    "type": "keyword_on",
+    "named": true
+  },
+  {
+    "type": "keyword_partial",
+    "named": true
+  },
+  {
+    "type": "keyword_primary",
+    "named": true
+  },
+  {
     "type": "keyword_real",
     "named": true
   },
   {
+    "type": "keyword_references",
+    "named": true
+  },
+  {
+    "type": "keyword_restrict",
+    "named": true
+  },
+  {
     "type": "keyword_serial",
+    "named": true
+  },
+  {
+    "type": "keyword_set",
+    "named": true
+  },
+  {
+    "type": "keyword_simple",
     "named": true
   },
   {
@@ -663,6 +815,10 @@
   },
   {
     "type": "keyword_unlogged",
+    "named": true
+  },
+  {
+    "type": "keyword_update",
     "named": true
   },
   {

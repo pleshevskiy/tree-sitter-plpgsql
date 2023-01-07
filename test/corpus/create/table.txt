@@ -192,7 +192,8 @@ create table foo (
           name: (identifier)
           datatype: (keyword_uuid)
           (column_constraint
-            (keyword_primary_key)
+            (keyword_primary)
+            (keyword_key)
           )
         )
         (column_definition
@@ -228,6 +229,62 @@ create table foo (
 )
 
 ================================================================================
+Create a table with primary key and foreign key
+================================================================================
+create table foo (
+  id      uuid  primary key,
+  bar_id  uuid  null references bar (id) on update set null on delete cascade
+);
+--------------------------------------------------------------------------------
+
+(source_file
+  (statement
+    (create_table
+      (keyword_create)
+      (keyword_table)
+      (table_reference
+        name: (identifier)
+      )
+      (column_definitions
+        (column_definition
+          name: (identifier)
+          datatype: (keyword_uuid)
+          (column_constraint
+            (keyword_primary)
+            (keyword_key)
+          )
+        )
+        (column_definition
+          name: (identifier)
+          datatype: (keyword_uuid)
+          (column_constraint
+            (keyword_null)
+          )
+          (column_constraint
+            (keyword_references)
+            (table_reference
+              name: (identifier)
+            )
+            refcolumn: (identifier)
+            (keyword_on)
+            (keyword_update)
+            (referencial_action
+              (keyword_set)
+              (keyword_null)
+            )
+            (keyword_on)
+            (keyword_delete)
+            (referencial_action
+              (keyword_cascade)
+            )
+          )
+        )
+      )
+    )
+  )
+)
+
+================================================================================
 Create a table with named column constraints
 ================================================================================
 create table foo (
@@ -254,7 +311,8 @@ create table foo (
           (column_constraint
             (keyword_constraint)
             name: (identifier)
-            (keyword_primary_key)
+            (keyword_primary)
+            (keyword_key)
           )
         )
         (column_definition

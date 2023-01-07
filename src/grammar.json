@@ -287,7 +287,246 @@
             },
             {
               "type": "SYMBOL",
-              "name": "keyword_primary_key"
+              "name": "_primary_key"
+            },
+            {
+              "type": "SEQ",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "keyword_references"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "table_reference"
+                },
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "STRING",
+                          "value": "("
+                        },
+                        {
+                          "type": "FIELD",
+                          "name": "refcolumn",
+                          "content": {
+                            "type": "SYMBOL",
+                            "name": "identifier"
+                          }
+                        },
+                        {
+                          "type": "STRING",
+                          "value": ")"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "BLANK"
+                    }
+                  ]
+                },
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SYMBOL",
+                      "name": "_foreign_key_match"
+                    },
+                    {
+                      "type": "BLANK"
+                    }
+                  ]
+                },
+                {
+                  "type": "CHOICE",
+                  "members": [
+                    {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "SYMBOL",
+                          "name": "_foreign_key_on_delete"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "_foreign_key_on_update"
+                        }
+                      ]
+                    },
+                    {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "SYMBOL",
+                          "name": "_foreign_key_on_update"
+                        },
+                        {
+                          "type": "SYMBOL",
+                          "name": "_foreign_key_on_delete"
+                        }
+                      ]
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    "_foreign_key_match": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "keyword_match"
+        },
+        {
+          "type": "CHOICE",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "keyword_full"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "keyword_partial"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "keyword_simple"
+            }
+          ]
+        }
+      ]
+    },
+    "_foreign_key_on_delete": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "keyword_on"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "keyword_delete"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "referencial_action"
+        }
+      ]
+    },
+    "_foreign_key_on_update": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "keyword_on"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "keyword_update"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "referencial_action"
+        }
+      ]
+    },
+    "referencial_action": {
+      "type": "CHOICE",
+      "members": [
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "keyword_no"
+            },
+            {
+              "type": "SYMBOL",
+              "name": "keyword_action"
+            }
+          ]
+        },
+        {
+          "type": "SYMBOL",
+          "name": "keyword_restrict"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "keyword_cascade"
+        },
+        {
+          "type": "SEQ",
+          "members": [
+            {
+              "type": "SYMBOL",
+              "name": "keyword_set"
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SYMBOL",
+                  "name": "keyword_null"
+                },
+                {
+                  "type": "SYMBOL",
+                  "name": "keyword_default"
+                }
+              ]
+            },
+            {
+              "type": "CHOICE",
+              "members": [
+                {
+                  "type": "SEQ",
+                  "members": [
+                    {
+                      "type": "STRING",
+                      "value": "("
+                    },
+                    {
+                      "type": "SEQ",
+                      "members": [
+                        {
+                          "type": "SYMBOL",
+                          "name": "identifier"
+                        },
+                        {
+                          "type": "REPEAT",
+                          "content": {
+                            "type": "SEQ",
+                            "members": [
+                              {
+                                "type": "STRING",
+                                "value": ","
+                              },
+                              {
+                                "type": "SYMBOL",
+                                "name": "identifier"
+                              }
+                            ]
+                          }
+                        }
+                      ]
+                    },
+                    {
+                      "type": "STRING",
+                      "value": ")"
+                    }
+                  ]
+                },
+                {
+                  "type": "BLANK"
+                }
+              ]
             }
           ]
         }
@@ -859,6 +1098,32 @@
         }
       ]
     },
+    "_primary_key": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "keyword_primary"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "keyword_key"
+        }
+      ]
+    },
+    "_foreign_key": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "SYMBOL",
+          "name": "keyword_foreign"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "keyword_key"
+        }
+      ]
+    },
     "_if_not_exists": {
       "type": "SEQ",
       "members": [
@@ -997,18 +1262,69 @@
       "type": "PATTERN",
       "value": "unique|UNIQUE"
     },
-    "keyword_primary_key": {
-      "type": "SEQ",
-      "members": [
-        {
-          "type": "PATTERN",
-          "value": "primary|PRIMARY"
-        },
-        {
-          "type": "PATTERN",
-          "value": "key|KEY"
-        }
-      ]
+    "keyword_primary": {
+      "type": "PATTERN",
+      "value": "primary|PRIMARY"
+    },
+    "keyword_foreign": {
+      "type": "PATTERN",
+      "value": "foreign|FOREIGN"
+    },
+    "keyword_key": {
+      "type": "PATTERN",
+      "value": "key|KEY"
+    },
+    "keyword_references": {
+      "type": "PATTERN",
+      "value": "references|REFERENCES"
+    },
+    "keyword_on": {
+      "type": "PATTERN",
+      "value": "on|ON"
+    },
+    "keyword_no": {
+      "type": "PATTERN",
+      "value": "no|NO"
+    },
+    "keyword_delete": {
+      "type": "PATTERN",
+      "value": "delete|DELETE"
+    },
+    "keyword_update": {
+      "type": "PATTERN",
+      "value": "update|UPDATE"
+    },
+    "keyword_match": {
+      "type": "PATTERN",
+      "value": "match|MATCH"
+    },
+    "keyword_full": {
+      "type": "PATTERN",
+      "value": "full|FULL"
+    },
+    "keyword_partial": {
+      "type": "PATTERN",
+      "value": "partial|PARTIAL"
+    },
+    "keyword_simple": {
+      "type": "PATTERN",
+      "value": "simple|SIMPLE"
+    },
+    "keyword_action": {
+      "type": "PATTERN",
+      "value": "action|ACTION"
+    },
+    "keyword_set": {
+      "type": "PATTERN",
+      "value": "set|SET"
+    },
+    "keyword_restrict": {
+      "type": "PATTERN",
+      "value": "restrict|RESTRICT"
+    },
+    "keyword_cascade": {
+      "type": "PATTERN",
+      "value": "cascade|CASCADE"
     },
     "keyword_xml": {
       "type": "PATTERN",

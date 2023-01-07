@@ -63,12 +63,43 @@ module.exports = grammar({
               seq($.keyword_nulls, optional($.keyword_not), $.keyword_distinct)
             )
           ),
-          $.keyword_primary_key
+          $._primary_key,
+          seq(
+            $.keyword_references,
+            $.table_reference,
+            optional(seq("(", field("refcolumn", $.identifier), ")")),
+            optional($._foreign_key_match),
+            choice(
+              seq($._foreign_key_on_delete, $._foreign_key_on_update),
+              seq($._foreign_key_on_update, $._foreign_key_on_delete)
+            )
+          )
           // TODO: CHECK
           // TODO: GENERATED
-          // TODO: FOREIGN KEY
         )
         // TODO: DEFERRABLE
+      ),
+
+    _foreign_key_match: ($) =>
+      seq(
+        $.keyword_match,
+        choice($.keyword_full, $.keyword_partial, $.keyword_simple)
+      ),
+    _foreign_key_on_delete: ($) =>
+      seq($.keyword_on, $.keyword_delete, $.referencial_action),
+    _foreign_key_on_update: ($) =>
+      seq($.keyword_on, $.keyword_update, $.referencial_action),
+
+    referencial_action: ($) =>
+      choice(
+        seq($.keyword_no, $.keyword_action),
+        $.keyword_restrict,
+        $.keyword_cascade,
+        seq(
+          $.keyword_set,
+          choice($.keyword_null, $.keyword_default),
+          optional(seq("(", commaSepRepeat1($.identifier), ")"))
+        )
       ),
 
     table_reference: ($) =>
@@ -174,6 +205,8 @@ module.exports = grammar({
     _type_json: ($) => choice($.keyword_json, $.keyword_jsonb),
 
     // keywords
+    _primary_key: ($) => seq($.keyword_primary, $.keyword_key),
+    _foreign_key: ($) => seq($.keyword_foreign, $.keyword_key),
     _if_not_exists: ($) => seq($.keyword_if, $.keyword_not, $.keyword_exists),
     _not_null: ($) => seq($.keyword_not, $.keyword_null),
     _without_time_zone: ($) => seq(mkKeyword("without"), $._keyword_time_zone),
@@ -195,7 +228,22 @@ module.exports = grammar({
     keyword_nulls: (_) => mkKeyword("nulls"),
     keyword_distinct: (_) => mkKeyword("distinct"),
     keyword_unique: (_) => mkKeyword("unique"),
-    keyword_primary_key: (_) => seq(mkKeyword("primary"), mkKeyword("key")),
+    keyword_primary: (_) => mkKeyword("primary"),
+    keyword_foreign: (_) => mkKeyword("foreign"),
+    keyword_key: (_) => mkKeyword("key"),
+    keyword_references: (_) => mkKeyword("references"),
+    keyword_on: (_) => mkKeyword("on"),
+    keyword_no: (_) => mkKeyword("no"),
+    keyword_delete: (_) => mkKeyword("delete"),
+    keyword_update: (_) => mkKeyword("update"),
+    keyword_match: (_) => mkKeyword("match"),
+    keyword_full: (_) => mkKeyword("full"),
+    keyword_partial: (_) => mkKeyword("partial"),
+    keyword_simple: (_) => mkKeyword("simple"),
+    keyword_action: (_) => mkKeyword("action"),
+    keyword_set: (_) => mkKeyword("set"),
+    keyword_restrict: (_) => mkKeyword("restrict"),
+    keyword_cascade: (_) => mkKeyword("cascade"),
     // References: https://www.postgresql.org/docs/15/datatype-xml.html
     keyword_xml: (_) => mkKeyword("xml"),
     // References: https://www.postgresql.org/docs/15/datatype-uuid.html
