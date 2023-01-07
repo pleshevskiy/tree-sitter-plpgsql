@@ -1,5 +1,10 @@
 [
   {
+    "type": "block_comment",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "char",
     "named": true,
     "fields": {
@@ -207,11 +212,6 @@
     }
   },
   {
-    "type": "comment",
-    "named": true,
-    "fields": {}
-  },
-  {
     "type": "create_table",
     "named": true,
     "fields": {},
@@ -335,6 +335,11 @@
     "fields": {}
   },
   {
+    "type": "line_comment",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "literal",
     "named": true,
     "fields": {},
@@ -356,11 +361,6 @@
         }
       ]
     }
-  },
-  {
-    "type": "marginalia",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "numeric",

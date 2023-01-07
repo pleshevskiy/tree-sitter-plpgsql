@@ -1119,7 +1119,7 @@
       "type": "PATTERN",
       "value": "jsonb|JSONB"
     },
-    "comment": {
+    "line_comment": {
       "type": "SEQ",
       "members": [
         {
@@ -1132,7 +1132,7 @@
         }
       ]
     },
-    "marginalia": {
+    "block_comment": {
       "type": "SEQ",
       "members": [
         {
@@ -1217,11 +1217,11 @@
     },
     {
       "type": "SYMBOL",
-      "name": "comment"
+      "name": "line_comment"
     },
     {
       "type": "SYMBOL",
-      "name": "marginalia"
+      "name": "block_comment"
     }
   ],
   "conflicts": [

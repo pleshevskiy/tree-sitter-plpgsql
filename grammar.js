@@ -1,7 +1,7 @@
 module.exports = grammar({
   name: "plpgsql",
 
-  extras: ($) => [/\s\n/, /\s/, $.comment, $.marginalia],
+  extras: ($) => [/\s\n/, /\s/, $.line_comment, $.block_comment],
 
   conflicts: ($) => [[$.keyword_char, $.keyword_varchar]],
 
@@ -239,9 +239,9 @@ module.exports = grammar({
 
     // -------
 
-    comment: (_) => seq("--", /.*\n/),
+    line_comment: (_) => seq("--", /.*\n/),
     // https://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment
-    marginalia: (_) => seq("/*", /[^*]*\*+(?:[^/*][^*]*\*+)*/, "/"),
+    block_comment: (_) => seq("/*", /[^*]*\*+(?:[^/*][^*]*\*+)*/, "/"),
 
     _literal_string: ($) => choice(seq("'", /[^']*/, "'")),
     _number: (_) => /\d+/,
