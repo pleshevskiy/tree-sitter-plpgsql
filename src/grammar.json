@@ -284,6 +284,10 @@
                   ]
                 }
               ]
+            },
+            {
+              "type": "SYMBOL",
+              "name": "keyword_primary_key"
             }
           ]
         }
@@ -992,6 +996,19 @@
     "keyword_unique": {
       "type": "PATTERN",
       "value": "unique|UNIQUE"
+    },
+    "keyword_primary_key": {
+      "type": "SEQ",
+      "members": [
+        {
+          "type": "PATTERN",
+          "value": "primary|PRIMARY"
+        },
+        {
+          "type": "PATTERN",
+          "value": "key|KEY"
+        }
+      ]
     },
     "keyword_xml": {
       "type": "PATTERN",

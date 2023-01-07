@@ -56,16 +56,16 @@ module.exports = grammar({
           $._not_null,
           $.keyword_null,
           seq($.keyword_default, $._expression),
+          // TODO: add index_parameters in UNIQUE, PRIMARY KEY
           seq(
             $.keyword_unique,
             optional(
               seq($.keyword_nulls, optional($.keyword_not), $.keyword_distinct)
             )
-          )
+          ),
+          $.keyword_primary_key
           // TODO: CHECK
           // TODO: GENERATED
-          // TODO: UNIQUE
-          // TODO: PRIMARY KEY
           // TODO: FOREIGN KEY
         )
         // TODO: DEFERRABLE
@@ -195,6 +195,7 @@ module.exports = grammar({
     keyword_nulls: (_) => mkKeyword("nulls"),
     keyword_distinct: (_) => mkKeyword("distinct"),
     keyword_unique: (_) => mkKeyword("unique"),
+    keyword_primary_key: (_) => seq(mkKeyword("primary"), mkKeyword("key")),
     // References: https://www.postgresql.org/docs/15/datatype-xml.html
     keyword_xml: (_) => mkKeyword("xml"),
     // References: https://www.postgresql.org/docs/15/datatype-uuid.html

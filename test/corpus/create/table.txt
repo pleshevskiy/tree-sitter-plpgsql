@@ -172,6 +172,7 @@ create table foo (
 Create a table with column constraints
 ================================================================================
 create table foo (
+  id  uuid  primary key,
   c1  text  not null,
   c2  text  null,
   c3  text  not null default 'hello'
@@ -187,6 +188,13 @@ create table foo (
         name: (identifier)
       )
       (column_definitions
+        (column_definition
+          name: (identifier)
+          datatype: (keyword_uuid)
+          (column_constraint
+            (keyword_primary_key)
+          )
+        )
         (column_definition
           name: (identifier)
           datatype: (keyword_text)
@@ -223,6 +231,7 @@ create table foo (
 Create a table with named column constraints
 ================================================================================
 create table foo (
+  id  uuid  constraint foo_pkey primary key,
   c1  text  constraint strong_c1 not null,
   c2  text  constraint weak_c2 null,
   c3  text  constraint "c3 with power" not null constraint "c2 set default hello" default 'hello',
@@ -239,6 +248,15 @@ create table foo (
         name: (identifier)
       )
       (column_definitions
+        (column_definition
+          name: (identifier)
+          datatype: (keyword_uuid)
+          (column_constraint
+            (keyword_constraint)
+            name: (identifier)
+            (keyword_primary_key)
+          )
+        )
         (column_definition
           name: (identifier)
           datatype: (keyword_text)

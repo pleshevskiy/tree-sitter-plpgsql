@@ -74,6 +74,10 @@
           "named": true
         },
         {
+          "type": "keyword_primary_key",
+          "named": true
+        },
+        {
           "type": "keyword_unique",
           "named": true
         },
@@ -318,6 +322,11 @@
   },
   {
     "type": "keyword_char",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "keyword_primary_key",
     "named": true,
     "fields": {}
   },
