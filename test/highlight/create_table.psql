@@ -1,0 +1,38 @@
+create table public.foo (
+-- <- keyword
+--     ^ keyword
+--           ^ namespace
+--                 ^ punctuation.delimiter
+--                  ^ constant
+--                      ^ punctuation.brackets
+  id uuid constraint foo_pkey primary key,
+  -- <- variable
+  -- ^ type.builtin
+  --      ^ keyword
+  --                 ^ variable
+  --                          ^ keyword
+  --                                  ^ keyword
+  --                                     ^ punctuation.delimiter
+
+  confirmed boolean not null default true
+  -- <- variable
+  --        ^ type.builtin
+  --                ^ keyword
+  --                    ^ keyword
+  --                         ^ keyword
+  --                                 ^ boolean
+
+  bar_id uuid not null constraint foo_bar_id_fkey references bar on update cascade on delete cascade,
+  --                   ^ keyword
+  --                              ^ variable
+  --                                              ^ keyword
+  --                                                         ^ constant
+  --                                                             ^ keyword
+  --                                                                ^ keyword
+  --                                                                       ^ keyword
+  --                                                                               ^ keyword
+  --                                                                                  ^ keyword
+  --                                                                                         ^ keyword
+)  ;
+-- <- punctuation.brackets
+-- ^ punctuation.delimiter

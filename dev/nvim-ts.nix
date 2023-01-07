@@ -2,7 +2,7 @@
 
 let
   extraGrammars = {
-    tree-sitter-plpgsql = {
+    tree-sitter-psql = {
       language = "psql";
       src = ../.;
       version = "0.0.0";
@@ -10,14 +10,17 @@ let
   };
 
   tree-sitter = (pkgs.tree-sitter.override { inherit extraGrammars; });
-  grammars = tree-sitter.withPlugins (g: tree-sitter.allGrammars);
+  grammars = tree-sitter.withPlugins (g: [ g.tree-sitter-psql ]);
 
-  nvim-treesitter = pkgs.vimPlugins.nvim-treesitter.overrideAttrs (oldAttrs: {
+  nvim-treesitter = pkgs.vimPlugins.nvim-treesitter.withAllGrammars.overrideAttrs (oldAttrs: {
+    passthru.dependencies = oldAttrs.passthru.dependencies ++ [
+      (pkgs.runCommand "nvim-treesitter-psql-grammar" { } ''
+        mkdir -p $out/parser
+        ln -s ${grammars}/psql.so $out/parser/psql.so
+      '')
+    ];
     postPatch = ''
-      rm -r parser
-      ln -s ${grammars} parser
-
-      ln -s ${../.}/queries queries/psql
+      ln -s ${extraGrammars.tree-sitter-psql.src}/queries queries/psql
     '';
   });
 

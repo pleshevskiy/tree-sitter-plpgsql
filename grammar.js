@@ -1,5 +1,5 @@
 module.exports = grammar({
-  name: "plpgsql",
+  name: "psql",
 
   extras: ($) => [/\s\n/, /\s/, $.line_comment, $.block_comment],
 
@@ -69,9 +69,11 @@ module.exports = grammar({
             $.table_reference,
             optional(seq("(", field("refcolumn", $.identifier), ")")),
             optional($._foreign_key_match),
-            choice(
-              seq($._foreign_key_on_delete, $._foreign_key_on_update),
-              seq($._foreign_key_on_update, $._foreign_key_on_delete)
+            optional(
+              choice(
+                seq($._foreign_key_on_delete, $._foreign_key_on_update),
+                seq($._foreign_key_on_update, $._foreign_key_on_delete)
+              )
             )
           )
           // TODO: CHECK
@@ -116,8 +118,8 @@ module.exports = grammar({
 
     literal: ($) =>
       choice(
-        $._number,
-        $._literal_string,
+        $.number,
+        $.literal_string,
         $.keyword_true,
         $.keyword_false,
         $.keyword_null
@@ -291,8 +293,8 @@ module.exports = grammar({
     // https://stackoverflow.com/questions/13014947/regex-to-match-a-c-style-multiline-comment
     block_comment: (_) => seq("/*", /[^*]*\*+(?:[^/*][^*]*\*+)*/, "/"),
 
-    _literal_string: ($) => choice(seq("'", /[^']*/, "'")),
-    _number: (_) => /\d+/,
+    literal_string: ($) => choice(seq("'", /[^']*/, "'")),
+    number: (_) => /\d+/,
 
     identifier: ($) => choice($._identifier, seq('"', /[^"]+/, '"')),
 
@@ -316,9 +318,9 @@ function parametricType($, type, params = ["size"]) {
         type,
         "(",
         // first parameter is guaranteed, shift it out of the array
-        field(params.shift(), alias($._number, $.literal)),
+        field(params.shift(), $.number),
         // then, fill in the ", next" until done
-        ...params.map((p) => seq(",", field(p, alias($._number, $.literal)))),
+        ...params.map((p) => seq(",", field(p, $.number))),
         ")"
       )
     )

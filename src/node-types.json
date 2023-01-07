@@ -13,7 +13,7 @@
         "required": false,
         "types": [
           {
-            "type": "literal",
+            "type": "number",
             "named": true
           }
         ]
@@ -337,7 +337,7 @@
         "required": false,
         "types": [
           {
-            "type": "literal",
+            "type": "number",
             "named": true
           }
         ]
@@ -347,7 +347,7 @@
         "required": false,
         "types": [
           {
-            "type": "literal",
+            "type": "number",
             "named": true
           }
         ]
@@ -415,7 +415,7 @@
     "fields": {},
     "children": {
       "multiple": false,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "keyword_false",
@@ -428,9 +428,22 @@
         {
           "type": "keyword_true",
           "named": true
+        },
+        {
+          "type": "literal_string",
+          "named": true
+        },
+        {
+          "type": "number",
+          "named": true
         }
       ]
     }
+  },
+  {
+    "type": "literal_string",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "numeric",
@@ -441,7 +454,7 @@
         "required": false,
         "types": [
           {
-            "type": "literal",
+            "type": "number",
             "named": true
           }
         ]
@@ -451,7 +464,7 @@
         "required": false,
         "types": [
           {
-            "type": "literal",
+            "type": "number",
             "named": true
           }
         ]
@@ -576,7 +589,7 @@
         "required": false,
         "types": [
           {
-            "type": "literal",
+            "type": "number",
             "named": true
           }
         ]
@@ -827,6 +840,10 @@
   },
   {
     "type": "keyword_xml",
+    "named": true
+  },
+  {
+    "type": "number",
     "named": true
   }
 ]

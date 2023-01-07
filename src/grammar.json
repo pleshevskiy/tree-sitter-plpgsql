@@ -1,5 +1,5 @@
 {
-  "name": "plpgsql",
+  "name": "psql",
   "word": "_identifier",
   "rules": {
     "source_file": {
@@ -345,30 +345,38 @@
                   "type": "CHOICE",
                   "members": [
                     {
-                      "type": "SEQ",
+                      "type": "CHOICE",
                       "members": [
                         {
-                          "type": "SYMBOL",
-                          "name": "_foreign_key_on_delete"
+                          "type": "SEQ",
+                          "members": [
+                            {
+                              "type": "SYMBOL",
+                              "name": "_foreign_key_on_delete"
+                            },
+                            {
+                              "type": "SYMBOL",
+                              "name": "_foreign_key_on_update"
+                            }
+                          ]
                         },
                         {
-                          "type": "SYMBOL",
-                          "name": "_foreign_key_on_update"
+                          "type": "SEQ",
+                          "members": [
+                            {
+                              "type": "SYMBOL",
+                              "name": "_foreign_key_on_update"
+                            },
+                            {
+                              "type": "SYMBOL",
+                              "name": "_foreign_key_on_delete"
+                            }
+                          ]
                         }
                       ]
                     },
                     {
-                      "type": "SEQ",
-                      "members": [
-                        {
-                          "type": "SYMBOL",
-                          "name": "_foreign_key_on_update"
-                        },
-                        {
-                          "type": "SYMBOL",
-                          "name": "_foreign_key_on_delete"
-                        }
-                      ]
+                      "type": "BLANK"
                     }
                   ]
                 }
@@ -584,11 +592,11 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "_number"
+          "name": "number"
         },
         {
           "type": "SYMBOL",
-          "name": "_literal_string"
+          "name": "literal_string"
         },
         {
           "type": "SYMBOL",
@@ -743,13 +751,8 @@
                     "type": "FIELD",
                     "name": "precision",
                     "content": {
-                      "type": "ALIAS",
-                      "content": {
-                        "type": "SYMBOL",
-                        "name": "_number"
-                      },
-                      "named": true,
-                      "value": "literal"
+                      "type": "SYMBOL",
+                      "name": "number"
                     }
                   },
                   {
@@ -786,13 +789,8 @@
                     "type": "FIELD",
                     "name": "precision",
                     "content": {
-                      "type": "ALIAS",
-                      "content": {
-                        "type": "SYMBOL",
-                        "name": "_number"
-                      },
-                      "named": true,
-                      "value": "literal"
+                      "type": "SYMBOL",
+                      "name": "number"
                     }
                   },
                   {
@@ -806,13 +804,8 @@
                         "type": "FIELD",
                         "name": "scale",
                         "content": {
-                          "type": "ALIAS",
-                          "content": {
-                            "type": "SYMBOL",
-                            "name": "_number"
-                          },
-                          "named": true,
-                          "value": "literal"
+                          "type": "SYMBOL",
+                          "name": "number"
                         }
                       }
                     ]
@@ -856,13 +849,8 @@
                     "type": "FIELD",
                     "name": "precision",
                     "content": {
-                      "type": "ALIAS",
-                      "content": {
-                        "type": "SYMBOL",
-                        "name": "_number"
-                      },
-                      "named": true,
-                      "value": "literal"
+                      "type": "SYMBOL",
+                      "name": "number"
                     }
                   },
                   {
@@ -899,13 +887,8 @@
                     "type": "FIELD",
                     "name": "precision",
                     "content": {
-                      "type": "ALIAS",
-                      "content": {
-                        "type": "SYMBOL",
-                        "name": "_number"
-                      },
-                      "named": true,
-                      "value": "literal"
+                      "type": "SYMBOL",
+                      "name": "number"
                     }
                   },
                   {
@@ -919,13 +902,8 @@
                         "type": "FIELD",
                         "name": "scale",
                         "content": {
-                          "type": "ALIAS",
-                          "content": {
-                            "type": "SYMBOL",
-                            "name": "_number"
-                          },
-                          "named": true,
-                          "value": "literal"
+                          "type": "SYMBOL",
+                          "name": "number"
                         }
                       }
                     ]
@@ -983,13 +961,8 @@
                 "type": "FIELD",
                 "name": "size",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "_number"
-                  },
-                  "named": true,
-                  "value": "literal"
+                  "type": "SYMBOL",
+                  "name": "number"
                 }
               },
               {
@@ -1026,13 +999,8 @@
                 "type": "FIELD",
                 "name": "size",
                 "content": {
-                  "type": "ALIAS",
-                  "content": {
-                    "type": "SYMBOL",
-                    "name": "_number"
-                  },
-                  "named": true,
-                  "value": "literal"
+                  "type": "SYMBOL",
+                  "name": "number"
                 }
               },
               {
@@ -1536,7 +1504,7 @@
         }
       ]
     },
-    "_literal_string": {
+    "literal_string": {
       "type": "CHOICE",
       "members": [
         {
@@ -1558,7 +1526,7 @@
         }
       ]
     },
-    "_number": {
+    "number": {
       "type": "PATTERN",
       "value": "\\d+"
     },

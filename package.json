@@ -1,5 +1,5 @@
 {
-  "name": "tree-sitter-plpgsql",
+  "name": "tree-sitter-psql",
   "version": "1.0.0",
   "description": "",
   "main": "grammar.js",
@@ -8,7 +8,9 @@
   "tree-sitter": [
     {
       "scope": "source.psql",
-      "file-types": ["psql"],
+      "file-types": [
+        "psql"
+      ],
       "injection-regex": "^psql$"
     }
   ]
