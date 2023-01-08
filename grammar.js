@@ -34,12 +34,8 @@ module.exports = grammar({
       ),
 
     column_definitions: ($) =>
-      seq(
-        "(",
-        optional(
-          commaSepRepeat1(choice($.column_definition, $.table_constraint))
-        ),
-        ")"
+      parens(
+        optional(commaSep1(choice($.column_definition, $.table_constraint)))
       ),
 
     column_definition: ($) =>
@@ -55,12 +51,25 @@ module.exports = grammar({
           // TODO: add index_parameters in UNIQUE, PRIMARY KEY
           $._unique_constraint,
           $._primary_key,
-          $._foreign_key_references
+          seq(
+            $.keyword_references,
+            $.table_reference,
+            optional($.ref_column),
+            optional($._foreign_key_match),
+            optional(
+              choice(
+                seq($._foreign_key_on_delete, $._foreign_key_on_update),
+                seq($._foreign_key_on_update, $._foreign_key_on_delete)
+              )
+            )
+          )
           // TODO: CHECK
           // TODO: GENERATED
         )
         // TODO: DEFERRABLE
       ),
+
+    ref_column: ($) => parens(field("name", $.identifier)),
 
     table_constraint: ($) =>
       seq(
@@ -68,15 +77,27 @@ module.exports = grammar({
         choice(
           seq($._unique_constraint, $.column_list),
           seq($._primary_key, $.column_list),
-          seq($._foreign_key, $.column_list, $._foreign_key_references)
+          seq(
+            $._foreign_key,
+            $.column_list,
+            $.keyword_references,
+            $.table_reference,
+            optional(alias($.column_list, $.ref_column_list)),
+            optional($._foreign_key_match),
+            optional(
+              choice(
+                seq($._foreign_key_on_delete, $._foreign_key_on_update),
+                seq($._foreign_key_on_update, $._foreign_key_on_delete)
+              )
+            )
+          )
           // TODO: CHECK
           // TODO: EXCLUDE
         )
         // TODO: DEFERRABLE
       ),
 
-    column_list: ($) =>
-      seq("(", commaSepRepeat1(field("name", $.identifier)), ")"),
+    column_list: ($) => parens(commaSep1(field("name", $.identifier))),
 
     _unique_constraint: ($) =>
       seq(
@@ -86,19 +107,6 @@ module.exports = grammar({
         )
       ),
 
-    _foreign_key_references: ($) =>
-      seq(
-        $.keyword_references,
-        $.table_reference,
-        optional(seq("(", field("refcolumn", $.identifier), ")")),
-        optional($._foreign_key_match),
-        optional(
-          choice(
-            seq($._foreign_key_on_delete, $._foreign_key_on_update),
-            seq($._foreign_key_on_update, $._foreign_key_on_delete)
-          )
-        )
-      ),
     _foreign_key_match: ($) =>
       seq(
         $.keyword_match,
@@ -117,7 +125,7 @@ module.exports = grammar({
         seq(
           $.keyword_set,
           choice($.keyword_null, $.keyword_default),
-          optional(seq("(", commaSepRepeat1($.identifier), ")"))
+          optional(parens(commaSep1($.identifier)))
         )
       ),
 
@@ -324,8 +332,16 @@ function mkKeyword(word) {
   return new RegExp(word + "|" + word.toUpperCase());
 }
 
-function commaSepRepeat1(field) {
-  return seq(field, repeat(seq(",", field)));
+function commaSep1(rule) {
+  return sep1(",", rule);
+}
+
+function sep1(separator, rule) {
+  return seq(rule, repeat(seq(separator, rule)));
+}
+
+function parens(rule) {
+  return seq("(", rule, ")");
 }
 
 function parametricType($, type, params = ["size"]) {

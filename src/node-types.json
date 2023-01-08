@@ -43,16 +43,6 @@
             "named": true
           }
         ]
-      },
-      "refcolumn": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
       }
     },
     "children": {
@@ -129,6 +119,10 @@
         },
         {
           "type": "literal",
+          "named": true
+        },
+        {
+          "type": "ref_column",
           "named": true
         },
         {
@@ -408,6 +402,38 @@
     }
   },
   {
+    "type": "ref_column",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "ref_column_list",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
     "type": "referencial_action",
     "named": true,
     "fields": {},
@@ -493,16 +519,6 @@
             "named": true
           }
         ]
-      },
-      "refcolumn": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
       }
     },
     "children": {
@@ -575,6 +591,10 @@
         },
         {
           "type": "keyword_update",
+          "named": true
+        },
+        {
+          "type": "ref_column_list",
           "named": true
         },
         {

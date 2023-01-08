@@ -267,7 +267,9 @@ create table foo (
             (table_reference
               name: (identifier)
             )
-            refcolumn: (identifier)
+            (ref_column
+              name: (identifier)
+            )
             (keyword_on)
             (keyword_update)
             (referencial_action
@@ -364,6 +366,313 @@ create table foo (
             (keyword_nulls)
             (keyword_not)
             (keyword_distinct)
+          )
+        )
+      )
+    )
+  )
+)
+
+================================================================================
+Create a table with table constraints
+================================================================================
+create table foo (
+  id  uuid,
+  primary key (id),
+  c1  text  not null,
+  c2  text  null,
+  c3  text  not null default 'hello',
+  unique (c1, c3)
+);
+--------------------------------------------------------------------------------
+
+(source_file
+  (statement
+    (create_table
+      (keyword_create)
+      (keyword_table)
+      (table_reference
+        name: (identifier)
+      )
+      (column_definitions
+        (column_definition
+          name: (identifier)
+          (type (keyword_uuid))
+        )
+        (table_constraint
+          (keyword_primary)
+          (keyword_key)
+          (column_list
+            name: (identifier)
+          )
+        )
+        (column_definition
+          name: (identifier)
+          (type (keyword_text))
+          (column_constraint
+            (keyword_not)
+            (keyword_null)
+          )
+        )
+        (column_definition
+          name: (identifier)
+          (type (keyword_text))
+          (column_constraint
+            (keyword_null)
+          )
+        )
+        (column_definition
+          name: (identifier)
+          (type (keyword_text))
+          (column_constraint
+            (keyword_not)
+            (keyword_null)
+          )
+          (column_constraint
+            (keyword_default)
+            (literal
+              (literal_string)
+            )
+          )
+        )
+        (table_constraint
+          (keyword_unique)
+          (column_list
+            name: (identifier)
+            name: (identifier)
+          )
+        )
+      )
+    )
+  )
+)
+
+================================================================================
+Create a table with primary key and foreign key
+================================================================================
+create table foo (
+  id      uuid  primary key,
+  bar_id  uuid  null references bar (id) on update set null on delete cascade
+);
+--------------------------------------------------------------------------------
+
+(source_file
+  (statement
+    (create_table
+      (keyword_create)
+      (keyword_table)
+      (table_reference
+        name: (identifier)
+      )
+      (column_definitions
+        (column_definition
+          name: (identifier)
+          (type (keyword_uuid))
+          (column_constraint
+            (keyword_primary)
+            (keyword_key)
+          )
+        )
+        (column_definition
+          name: (identifier)
+          (type (keyword_uuid))
+          (column_constraint
+            (keyword_null)
+          )
+          (column_constraint
+            (keyword_references)
+            (table_reference
+              name: (identifier)
+            )
+            (ref_column
+              name: (identifier)
+            )
+            (keyword_on)
+            (keyword_update)
+            (referencial_action
+              (keyword_set)
+              (keyword_null)
+            )
+            (keyword_on)
+            (keyword_delete)
+            (referencial_action
+              (keyword_cascade)
+            )
+          )
+        )
+      )
+    )
+  )
+)
+
+================================================================================
+Create a table with named column constraints
+================================================================================
+create table foo (
+  id  uuid  constraint foo_pkey primary key,
+  c1  text  constraint strong_c1 not null,
+  c2  text  constraint weak_c2 null,
+  c3  text  constraint "c3 with power" not null constraint "c2 set default hello" default 'hello',
+  c4  text  constraint "c4 unique" unique nulls not distinct
+);
+--------------------------------------------------------------------------------
+
+(source_file
+  (statement
+    (create_table
+      (keyword_create)
+      (keyword_table)
+      (table_reference
+        name: (identifier)
+      )
+      (column_definitions
+        (column_definition
+          name: (identifier)
+          (type (keyword_uuid))
+          (column_constraint
+            (keyword_constraint)
+            name: (identifier)
+            (keyword_primary)
+            (keyword_key)
+          )
+        )
+        (column_definition
+          name: (identifier)
+          (type (keyword_text))
+          (column_constraint
+            (keyword_constraint)
+            name: (identifier)
+            (keyword_not)
+            (keyword_null)
+          )
+        )
+        (column_definition
+          name: (identifier)
+          (type (keyword_text))
+          (column_constraint
+            (keyword_constraint)
+            name: (identifier)
+            (keyword_null)
+          )
+        )
+        (column_definition
+          name: (identifier)
+          (type (keyword_text))
+          (column_constraint
+            (keyword_constraint)
+            name: (identifier)
+            (keyword_not)
+            (keyword_null)
+          )
+          (column_constraint
+            (keyword_constraint)
+            name: (identifier)
+            (keyword_default)
+            (literal
+              (literal_string)
+            )
+          )
+        )
+        (column_definition
+          name: (identifier)
+          (type (keyword_text))
+          (column_constraint
+            (keyword_constraint)
+            name: (identifier)
+            (keyword_unique)
+            (keyword_nulls)
+            (keyword_not)
+            (keyword_distinct)
+          )
+        )
+      )
+    )
+  )
+)
+
+================================================================================
+Create a table with named table constraints
+================================================================================
+create table foo (
+  id  uuid,
+  constraint foo_pkey primary key (id),
+  c3  uuid  not null,
+  constraint foo_c3_fkey foreign key (c3) references bar (id) on update set null on delete cascade,
+  c4  text,
+  constraint "c4 unique" unique nulls not distinct (c4)
+);
+--------------------------------------------------------------------------------
+
+(source_file
+  (statement
+    (create_table
+      (keyword_create)
+      (keyword_table)
+      (table_reference
+        name: (identifier)
+      )
+      (column_definitions
+        (column_definition
+          name: (identifier)
+          (type (keyword_uuid))
+        )
+        (table_constraint
+          (keyword_constraint)
+          name: (identifier)
+          (keyword_primary)
+          (keyword_key)
+          (column_list
+            name: (identifier)
+          )
+        )
+        (column_definition
+          name: (identifier)
+          (type (keyword_uuid))
+          (column_constraint
+            (keyword_not)
+            (keyword_null)
+          )
+        )
+        (table_constraint
+          (keyword_constraint)
+          name: (identifier)
+          (keyword_foreign)
+          (keyword_key)
+          (column_list
+            name: (identifier)
+          )
+          (keyword_references)
+          (table_reference
+            name: (identifier)
+          )
+          (ref_column_list
+            name: (identifier)
+          )
+          (keyword_on)
+          (keyword_update)
+          (referencial_action
+            (keyword_set)
+            (keyword_null)
+          )
+          (keyword_on)
+          (keyword_delete)
+          (referencial_action
+            (keyword_cascade)
+          )
+        )
+        (column_definition
+          name: (identifier)
+          (type (keyword_text))
+        )
+        (table_constraint
+          (keyword_constraint)
+          name: (identifier)
+          (keyword_unique)
+          (keyword_nulls)
+          (keyword_not)
+          (keyword_distinct)
+          (column_list
+            name: (identifier)
           )
         )
       )
