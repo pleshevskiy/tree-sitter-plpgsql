@@ -135,33 +135,33 @@ create table foo (
       (column_definitions
         (column_definition
           name: (identifier)
-          datatype: (keyword_text)
+          (type (keyword_text))
         )
         (column_definition
           name: (identifier)
-          datatype: (keyword_boolean)
+          (type (keyword_boolean))
         )
         (column_definition
           name: (identifier)
-          datatype: (numeric
+          (type (numeric
             (keyword_numeric)
             precision: (number)
-          )
+          ))
         )
         (column_definition
           name: (identifier)
-          datatype: (keyword_timestamptz)
+          (type (keyword_timestamptz))
         )
         (column_definition
           name: (identifier)
-          datatype: (varchar
+          (type (varchar
             (keyword_varchar)
             size: (number)
-          )
+          ))
         )
         (column_definition
           name: (identifier)
-          datatype: (keyword_uuid)
+          (type (keyword_uuid))
         )
       )
     )
@@ -190,7 +190,7 @@ create table foo (
       (column_definitions
         (column_definition
           name: (identifier)
-          datatype: (keyword_uuid)
+          (type (keyword_uuid))
           (column_constraint
             (keyword_primary)
             (keyword_key)
@@ -198,7 +198,7 @@ create table foo (
         )
         (column_definition
           name: (identifier)
-          datatype: (keyword_text)
+          (type (keyword_text))
           (column_constraint
             (keyword_not)
             (keyword_null)
@@ -206,14 +206,14 @@ create table foo (
         )
         (column_definition
           name: (identifier)
-          datatype: (keyword_text)
+          (type (keyword_text))
           (column_constraint
             (keyword_null)
           )
         )
         (column_definition
           name: (identifier)
-          datatype: (keyword_text)
+          (type (keyword_text))
           (column_constraint
             (keyword_not)
             (keyword_null)
@@ -250,7 +250,7 @@ create table foo (
       (column_definitions
         (column_definition
           name: (identifier)
-          datatype: (keyword_uuid)
+          (type (keyword_uuid))
           (column_constraint
             (keyword_primary)
             (keyword_key)
@@ -258,7 +258,7 @@ create table foo (
         )
         (column_definition
           name: (identifier)
-          datatype: (keyword_uuid)
+          (type (keyword_uuid))
           (column_constraint
             (keyword_null)
           )
@@ -309,7 +309,7 @@ create table foo (
       (column_definitions
         (column_definition
           name: (identifier)
-          datatype: (keyword_uuid)
+          (type (keyword_uuid))
           (column_constraint
             (keyword_constraint)
             name: (identifier)
@@ -319,7 +319,7 @@ create table foo (
         )
         (column_definition
           name: (identifier)
-          datatype: (keyword_text)
+          (type (keyword_text))
           (column_constraint
             (keyword_constraint)
             name: (identifier)
@@ -329,7 +329,7 @@ create table foo (
         )
         (column_definition
           name: (identifier)
-          datatype: (keyword_text)
+          (type (keyword_text))
           (column_constraint
             (keyword_constraint)
             name: (identifier)
@@ -338,7 +338,7 @@ create table foo (
         )
         (column_definition
           name: (identifier)
-          datatype: (keyword_text)
+          (type (keyword_text))
           (column_constraint
             (keyword_constraint)
             name: (identifier)
@@ -356,7 +356,7 @@ create table foo (
         )
         (column_definition
           name: (identifier)
-          datatype: (keyword_text)
+          (type (keyword_text))
           (column_constraint
             (keyword_constraint)
             name: (identifier)

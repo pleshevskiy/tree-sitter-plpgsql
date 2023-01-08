@@ -146,104 +146,6 @@
     "type": "column_definition",
     "named": true,
     "fields": {
-      "datatype": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "char",
-            "named": true
-          },
-          {
-            "type": "decimal",
-            "named": true
-          },
-          {
-            "type": "double",
-            "named": true
-          },
-          {
-            "type": "keyword_bigint",
-            "named": true
-          },
-          {
-            "type": "keyword_bigserial",
-            "named": true
-          },
-          {
-            "type": "keyword_boolean",
-            "named": true
-          },
-          {
-            "type": "keyword_bytea",
-            "named": true
-          },
-          {
-            "type": "keyword_date",
-            "named": true
-          },
-          {
-            "type": "keyword_datetime",
-            "named": true
-          },
-          {
-            "type": "keyword_integer",
-            "named": true
-          },
-          {
-            "type": "keyword_money",
-            "named": true
-          },
-          {
-            "type": "keyword_real",
-            "named": true
-          },
-          {
-            "type": "keyword_serial",
-            "named": true
-          },
-          {
-            "type": "keyword_smallint",
-            "named": true
-          },
-          {
-            "type": "keyword_smallserial",
-            "named": true
-          },
-          {
-            "type": "keyword_text",
-            "named": true
-          },
-          {
-            "type": "keyword_time",
-            "named": true
-          },
-          {
-            "type": "keyword_timestamp",
-            "named": true
-          },
-          {
-            "type": "keyword_timestamptz",
-            "named": true
-          },
-          {
-            "type": "keyword_uuid",
-            "named": true
-          },
-          {
-            "type": "keyword_xml",
-            "named": true
-          },
-          {
-            "type": "numeric",
-            "named": true
-          },
-          {
-            "type": "varchar",
-            "named": true
-          }
-        ]
-      },
       "name": {
         "multiple": false,
         "required": true,
@@ -257,10 +159,14 @@
     },
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "column_constraint",
+          "named": true
+        },
+        {
+          "type": "type",
           "named": true
         }
       ]
@@ -277,8 +183,28 @@
         {
           "type": "column_definition",
           "named": true
+        },
+        {
+          "type": "table_constraint",
+          "named": true
         }
       ]
+    }
+  },
+  {
+    "type": "column_list",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": true,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
     }
   },
   {
@@ -555,6 +481,114 @@
     }
   },
   {
+    "type": "table_constraint",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      },
+      "refcolumn": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "column_list",
+          "named": true
+        },
+        {
+          "type": "keyword_constraint",
+          "named": true
+        },
+        {
+          "type": "keyword_delete",
+          "named": true
+        },
+        {
+          "type": "keyword_distinct",
+          "named": true
+        },
+        {
+          "type": "keyword_foreign",
+          "named": true
+        },
+        {
+          "type": "keyword_full",
+          "named": true
+        },
+        {
+          "type": "keyword_key",
+          "named": true
+        },
+        {
+          "type": "keyword_match",
+          "named": true
+        },
+        {
+          "type": "keyword_not",
+          "named": true
+        },
+        {
+          "type": "keyword_nulls",
+          "named": true
+        },
+        {
+          "type": "keyword_on",
+          "named": true
+        },
+        {
+          "type": "keyword_partial",
+          "named": true
+        },
+        {
+          "type": "keyword_primary",
+          "named": true
+        },
+        {
+          "type": "keyword_references",
+          "named": true
+        },
+        {
+          "type": "keyword_simple",
+          "named": true
+        },
+        {
+          "type": "keyword_unique",
+          "named": true
+        },
+        {
+          "type": "keyword_update",
+          "named": true
+        },
+        {
+          "type": "referencial_action",
+          "named": true
+        },
+        {
+          "type": "table_reference",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "table_reference",
     "named": true,
     "fields": {
@@ -578,6 +612,120 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "type",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          }
+        ]
+      }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "char",
+          "named": true
+        },
+        {
+          "type": "decimal",
+          "named": true
+        },
+        {
+          "type": "double",
+          "named": true
+        },
+        {
+          "type": "keyword_bigint",
+          "named": true
+        },
+        {
+          "type": "keyword_bigserial",
+          "named": true
+        },
+        {
+          "type": "keyword_boolean",
+          "named": true
+        },
+        {
+          "type": "keyword_bytea",
+          "named": true
+        },
+        {
+          "type": "keyword_date",
+          "named": true
+        },
+        {
+          "type": "keyword_datetime",
+          "named": true
+        },
+        {
+          "type": "keyword_integer",
+          "named": true
+        },
+        {
+          "type": "keyword_money",
+          "named": true
+        },
+        {
+          "type": "keyword_real",
+          "named": true
+        },
+        {
+          "type": "keyword_serial",
+          "named": true
+        },
+        {
+          "type": "keyword_smallint",
+          "named": true
+        },
+        {
+          "type": "keyword_smallserial",
+          "named": true
+        },
+        {
+          "type": "keyword_text",
+          "named": true
+        },
+        {
+          "type": "keyword_time",
+          "named": true
+        },
+        {
+          "type": "keyword_timestamp",
+          "named": true
+        },
+        {
+          "type": "keyword_timestamptz",
+          "named": true
+        },
+        {
+          "type": "keyword_uuid",
+          "named": true
+        },
+        {
+          "type": "keyword_xml",
+          "named": true
+        },
+        {
+          "type": "numeric",
+          "named": true
+        },
+        {
+          "type": "varchar",
+          "named": true
+        }
+      ]
     }
   },
   {

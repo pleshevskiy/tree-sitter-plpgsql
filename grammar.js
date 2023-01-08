@@ -37,17 +37,13 @@ module.exports = grammar({
       seq(
         "(",
         optional(
-          commaSepRepeat1(choice($.column_definition /*, $.table_constraint*/))
+          commaSepRepeat1(choice($.column_definition, $.table_constraint))
         ),
         ")"
       ),
 
     column_definition: ($) =>
-      seq(
-        field("name", $.identifier),
-        field("datatype", $._type),
-        repeat($.column_constraint)
-      ),
+      seq(field("name", $.identifier), $.type, repeat($.column_constraint)),
 
     column_constraint: ($) =>
       seq(
@@ -57,31 +53,52 @@ module.exports = grammar({
           $.keyword_null,
           seq($.keyword_default, $._expression),
           // TODO: add index_parameters in UNIQUE, PRIMARY KEY
-          seq(
-            $.keyword_unique,
-            optional(
-              seq($.keyword_nulls, optional($.keyword_not), $.keyword_distinct)
-            )
-          ),
+          $._unique_constraint,
           $._primary_key,
-          seq(
-            $.keyword_references,
-            $.table_reference,
-            optional(seq("(", field("refcolumn", $.identifier), ")")),
-            optional($._foreign_key_match),
-            optional(
-              choice(
-                seq($._foreign_key_on_delete, $._foreign_key_on_update),
-                seq($._foreign_key_on_update, $._foreign_key_on_delete)
-              )
-            )
-          )
+          $._foreign_key_references
           // TODO: CHECK
           // TODO: GENERATED
         )
         // TODO: DEFERRABLE
       ),
 
+    table_constraint: ($) =>
+      seq(
+        optional(seq($.keyword_constraint, field("name", $.identifier))),
+        choice(
+          seq($._unique_constraint, $.column_list),
+          seq($._primary_key, $.column_list),
+          seq($._foreign_key, $.column_list, $._foreign_key_references)
+          // TODO: CHECK
+          // TODO: EXCLUDE
+        )
+        // TODO: DEFERRABLE
+      ),
+
+    column_list: ($) =>
+      seq("(", commaSepRepeat1(field("name", $.identifier)), ")"),
+
+    _unique_constraint: ($) =>
+      seq(
+        $.keyword_unique,
+        optional(
+          seq($.keyword_nulls, optional($.keyword_not), $.keyword_distinct)
+        )
+      ),
+
+    _foreign_key_references: ($) =>
+      seq(
+        $.keyword_references,
+        $.table_reference,
+        optional(seq("(", field("refcolumn", $.identifier), ")")),
+        optional($._foreign_key_match),
+        optional(
+          choice(
+            seq($._foreign_key_on_delete, $._foreign_key_on_update),
+            seq($._foreign_key_on_update, $._foreign_key_on_delete)
+          )
+        )
+      ),
     _foreign_key_match: ($) =>
       seq(
         $.keyword_match,
@@ -126,8 +143,9 @@ module.exports = grammar({
       ),
 
     // References: https://www.postgresql.org/docs/15/datatype.html
-    _type: ($) =>
+    type: ($) =>
       choice(
+        field("name", $.identifier),
         $._type_numeric,
         $._type_character,
         $._type_datetime,
